@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Fishflight</h1>
+        <div class="header-buttons">
+            <button class="button">Login</button>
+            <button class="button">Sign Up</button>
+        </div>
+    </header>
+    <main>
+        <div class="content-box">
+            <h2>Welcome to Fishflight</h2>
+            <p>Fishflight is a website designed to help view and compare data from model rocket launches without having to dive through thousands of lines on a spreadsheet.</p>
+            <img src="https://upload.wikimedia.org/wikipedia/en/7/70/Bob_at_Easel.jpg" alt="Placeholder Image">
+            <p>Fishflight lets users:</p>
+            <ul>
+                <li>Store Data: Allows users to upload and store their launch data for use later.</li>
+                <li>Compare Data: Load up multiple spreadsheets from launches and compare the different flights for consistencies.</li>
+                <li>Specific Data: Choose what information from the flight you want to see (Acceleration, Altitude, Pressure, etc.)</li>
+            </ul>
+            <p>Fishflight is designed to work with the <a href="https://www.robinson-aerospace.com/raslogger" target="_blank">Robinson Aerospace Rocket Datalogger</a></p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/_portrait_crop.jpg/800px_portrait_crop.jpg" alt="Another Placeholder Image">
+            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+    </main>
+</body>
+</html>
