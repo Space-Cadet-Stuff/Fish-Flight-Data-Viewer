@@ -32,21 +32,6 @@
             </div>
         </div>
     </main>
-    <script>
-        function toggleThemeMenu() {
-            const menu = document.getElementById('themeMenu');
-            menu.classList.toggle('show');
-        }
-        
-        // Close dropdown if clicked outside
-        window.onclick = function(e) {
-            if (!e.target.closest('.dropdown')) {
-                const dropdowns = document.getElementsByClassName("dropdown-content");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    dropdowns[i].classList.remove('show');
-                }
-            }
-        };
-    </script>
+    <script src="static/js/scripts.js"></script>
 </body>
 </html>

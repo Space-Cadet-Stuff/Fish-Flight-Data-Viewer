@@ -4,7 +4,7 @@ from setup_db import engine, User
 from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'some_random_secret'  # Needed for Flask sessions to work
+app.secret_key = 'Youkeepusingthatword.Idonotthinkitmeanswhatyouthinkitmeans'
 
 Session = sessionmaker(bind=engine)
 db_session = Session()  # renamed to avoid conflict
@@ -21,9 +21,9 @@ def login():
 
         user = db_session.query(User).filter_by(username=username).first()
         if user and user.check_password(password):
-            return render_template('dashboard.html', username=username, message="Login successful!")
+            return redirect(url_for('dashboard', username=username))
         else:
-            return "Invalid username or password", 401
+            return "Invalid username or password"
 
     return render_template('login.html')
 
@@ -46,20 +46,21 @@ def signup():
         db_session.add(new_user)
         db_session.commit()
 
-        return render_template('login.html', message="User created successfully! Please log in.")
-
+        return redirect(url_for('login'))
     return render_template('signup.html')
 
 @app.route('/dashboard')
 def dashboard():
     username = request.args.get('username')
     if not username:
-        return render_template('index.html')
+        return redirect(url_for('index'))
     return render_template('dashboard.html', username=username)
 
 @app.route('/logout')
 def logout():
-    return render_template('index.html')
+    username = flask_session.get('username')
+    flask_session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route('/set_theme', methods=['POST'])
 def set_theme():
