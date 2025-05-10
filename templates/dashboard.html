@@ -32,6 +32,17 @@
             </div>
         </div>
     </main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }} fade-in" onclick="dismissAlert(this)">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
     <script src="static/js/scripts.js"></script>
 </body>
 </html>

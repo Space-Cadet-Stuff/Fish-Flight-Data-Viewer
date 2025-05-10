@@ -246,3 +246,58 @@ input:focus {
 .show {
   display: block;
 }
+
+.flash-container {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.flash-message {
+  padding: 10px 20px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #0f0f0f;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+}
+
+.success {
+  background-color: #00ff99; /* neon green */
+  color: #0f0f0f;
+  box-shadow: 0 0 15px rgba(0, 255, 153, 0.8);
+  border: 2px solid #00ff99;
+}
+
+.error {
+  background-color: #ff0066; /* neon red */
+  color: #0f0f0f;
+  box-shadow: 0 0 15px rgba(255, 0, 102, 0.8);
+  border: 2px solid #ff0066;
+}
+
+.warning {
+  background-color: #ffcc00; /* neon yellow */
+  color: #0f0f0f;
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+  border: 2px solid #ffcc00;
+}
+
+.info {
+  background-color: #00ccff; /* neon blue */
+  color: #0f0f0f;
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.8);
+  border: 2px solid #00ccff;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}

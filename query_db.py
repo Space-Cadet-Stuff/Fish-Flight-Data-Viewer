@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from setup_db import User
 
 #Connect to the database
-engine = create_engine('sqlite:///todo.db')
+engine = create_engine('sqlite:///datalogger.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 

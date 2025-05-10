@@ -16,7 +16,7 @@ class User(Base):# User model
     def check_password(self, password):# Method to check password
         return check_password_hash(self.password, password)
 
-engine = create_engine('sqlite:///todo.db')# Database setup
+engine = create_engine('sqlite:///datalogger.db')# Database setup
 
 Base.metadata.create_all(engine)
 
