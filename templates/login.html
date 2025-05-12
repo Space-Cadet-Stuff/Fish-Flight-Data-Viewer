@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Fishflight</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/' + (session.get('theme') or 'halo.css')) }}">
 </head>
 <body>
@@ -20,6 +19,8 @@
                         <button type="submit" name="theme" value="halo.css" class="button">UNSC</button>
                         <button type="submit" name="theme" value="blade_runner.css" class="button">Tyrell</button>
                         <button type="submit" name="theme" value="tron.css" class="button">ENCOM</button>
+                        <button type="submit" name="theme" value="light.css" class="button">Sadist</button>
+                        <button type="submit" name="theme" value="matrix.css" class="button">Zion</button>
                     </form>
                 </div>
             </div>
