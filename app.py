@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session as flask_session, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from setup_db import engine, User
+from setup_db import engine, User, CSVFile
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+from datetime import datetime
+import os# last time someone imported this they 
+
 
 app = Flask(__name__)
 app.secret_key = 'Youkeepusingthatword.Idonotthinkitmeanswhatyouthinkitmeans'
@@ -11,6 +15,11 @@ app.secret_key = 'Youkeepusingthatword.Idonotthinkitmeanswhatyouthinkitmeans'
 engine = create_engine('sqlite:///datalogger.db')
 Session = sessionmaker(bind=engine)
 db_session = Session()  # renamed to avoid conflict
+
+
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/')# Define the index route
@@ -62,13 +71,16 @@ def signup():
 def dashboard():
     if "user_id" not in flask_session:# Check if the user is logged in
         flash("You need to login first", "warning")
-        return redirect(url_for('login'))  # Redirect to the login page if the user is not logged in
+        return redirect(url_for('index'))  # Redirect to the index page if the user is not logged in
     
     if 'first_login' in flask_session and flask_session['first_login']:# Check if it's the first time visiting the dashboard after login or logout
         flash("Welcome back, {}!".format(flask_session["username"]), "info")
         flask_session['first_login'] = False  # Set 'first_login' to False after showing the message
+
+    user_id = flask_session["user_id"]# Get the current user's ID from the session
+    files = db_session.query(CSVFile).filter_by(user_id=user_id).all()# Query the database for files uploaded by the current user
     
-    return render_template('dashboard.html', user_id=flask_session["user_id"], username=flask_session["username"])# Render the dashboard page and store the current user's id and username in the session
+    return render_template('dashboard.html', user_id=flask_session["user_id"], username=flask_session["username"], files=files)# Render the dashboard page and store the current user's id and username in the session
 
 @app.route('/logout')# Defines the logout route
 def logout():
@@ -76,11 +88,49 @@ def logout():
     flash("You have been logged out", "info")
     return redirect(url_for('index'))# Redirects to the index page
 
-@app.route('/set_theme', methods=['POST'])
+@app.route('/set_theme', methods=['POST'])# Define the route allowing the user to choose a theme
 def set_theme():
-    selected_theme = request.form.get('theme')
-    flask_session['theme'] = selected_theme
+    selected_theme = request.form.get('theme')# Get the selected theme from the form
+    flask_session['theme'] = selected_theme# Store the selected theme in the session
     return redirect(request.referrer or url_for('index'))
+
+@app.route('/upload', methods=["GET", "POST"])# Define the route for uploading files
+def upload():
+    if "user_id" not in flask_session:# Check if the user is logged in
+        flash("You need to login to upload files.", "warning")
+        return redirect(url_for("login"))
+
+    if request.method == "POST":# Handle file upload
+        title = request.form.get("title")
+        launch_date = request.form.get("launchDate")
+        engine_class = request.form.get("engineClass")
+        file = request.files.get("csvFile")
+
+        if not file or not file.filename.endswith('.csv'):# Check if the file is a valid CSV
+            flash("Please upload a valid CSV file.", "error")
+            return redirect(request.url)
+
+        filename = secure_filename(file.filename)# Secure the filename using werkzeug utils
+        user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(flask_session["user_id"]))# Create a user-specific folder
+        os.makedirs(user_folder, exist_ok=True)# Create the folder if it doesn't exist
+        filepath = os.path.join(user_folder, filename)# Save the file to the user-specific folder
+        file.save(filepath)# Save the file
+
+        csv_file = CSVFile(# Create a new CSVFile instance
+            filename=filename,
+            title=title,
+            launch_date=launch_date,
+            engine_class=engine_class,
+            user_id=flask_session["user_id"]
+        )
+        db_session.add(csv_file)# Add the new CSVFile instance to the session
+        db_session.commit()# Commit the session to save the file information to the database
+
+        flash("File uploaded successfully!", "success")
+        return redirect(url_for("dashboard"))
+
+    return render_template("upload.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

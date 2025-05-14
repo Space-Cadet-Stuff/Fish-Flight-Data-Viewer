@@ -27,18 +27,27 @@
     </header>
     <main>
         <div class="content-box">
-            <h2>Welcome, {{ username }}!</h2>
-            <p>Explore your dashboard and manage your account.</p>
-            {% if files %}
-            <h2>Your Uploaded Files</h2>
-            <ul>
-                {% for file in files %}
-                <li>{{ file.title }} - {{ file.filename }} - {{ file.upload_time.strftime('%Y-%m-%d') }}</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>You haven't uploaded any files yet.</p>
-            {% endif %}
+            <h2>Upload Data</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" placeholder="Enter title" required>
+
+            <div style="display: flex; gap: 20px;">
+                <div>
+                    <label for="launchDate">Launch Date:</label>
+                    <input type="date" id="launchDate" name="launchDate">
+                </div>
+                <div>
+                    <label for="engineClass">Engine Class:</label>
+                    <input type="text" id="engineClass" name="engineClass" placeholder="Enter engine class" required>
+                </div>
+            </div>
+
+            <label for="csvFile">Datasheet (CSV):</label>
+            <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
+
+            <button type="submit" class="button">Upload</button>
+            </form>
         </div>
     </main>
     {% with messages = get_flashed_messages(with_categories=true) %}

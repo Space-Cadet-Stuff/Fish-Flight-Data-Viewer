@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 @keyframes flicker {
 	0% { opacity: 1; }
@@ -36,19 +36,28 @@
 	100% { background-position: 200px 0; }
 }
 
+@keyframes backgroundShift {
+	0% {
+			background-position: 0 0, 10px 10px;
+	}
+	100% {
+			background-position: 20px 20px, 30px 30px;
+	}
+}
+
 body {
-	font-family: 'Orbitron', sans-serif;
+	font-family: 'Audiowide', sans-serif;
 	background-color: #0d0d0d;
 	color: #e0e0e0;
 	margin: 0;
 	padding: 0;
-background-image: repeating-linear-gradient(180deg, rgba(255, 0, 70, 0.05) 0px, rgba(255, 0, 70, 0.05) 1px, transparent 1px, transparent 3px),
-				  repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.04) 0px, rgba(0, 255, 255, 0.04) 2px, transparent 2px, transparent 6px),
-				  radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%);
-background-color: #0b0b0d;
-background-size: cover;
-background-blend-mode: screen, screen, normal;
-
+	background-image: repeating-linear-gradient(180deg, rgba(255, 0, 70, 0.05) 0px, rgba(255, 0, 70, 0.05) 1px, transparent 1px, transparent 3px),
+					  repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.04) 0px, rgba(0, 255, 255, 0.04) 2px, transparent 2px, transparent 6px),
+					  radial-gradient(ellipse at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%);
+	background-color: #0b0b0d;
+	background-size: cover;
+	background-blend-mode: screen, screen, normal;
+	animation: backgroundShift 5s linear infinite;
 }
 
 header {
@@ -89,7 +98,7 @@ header h1 {
 	transition: background-color 0.3s ease;
 	position: relative;
 	box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
-	font-family: 'Orbitron', sans-serif;
+	font-family: 'Audiowide', sans-serif;
 	display: block;
 	text-align: center;
 }
@@ -218,7 +227,7 @@ input:focus {
 	padding: 10px;
 	border-radius: 5px;
 	font-size: 1rem;
-	font-family: 'Orbitron', sans-serif;
+	font-family: 'Audiowide', sans-serif;
 	text-transform: none;
 	text-align: left;
 	cursor: pointer;
@@ -303,4 +312,69 @@ input:focus {
 .fade-out {
 		opacity: 0;
 		transition: opacity 0.5s ease-in-out;
+}
+
+.content-box form {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.content-box form label {
+	font-size: 1rem;
+	color: #d0d0d0;
+	margin-bottom: 5px;
+}
+
+.content-box form input[type="text"],
+.content-box form input[type="date"],
+.content-box form input[type="file"] {
+	background-color: #1a1a1a;
+	color: #e0e0e0;
+	border: 2px solid #00ffff;
+	padding: 10px;
+	border-radius: 5px;
+	font-size: 1rem;
+	width: 100%;
+	box-sizing: border-box;
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.content-box form input[type="text"]:focus,
+.content-box form input[type="date"]:focus,
+.content-box form input[type="file"]:focus {
+	border-color: #ff00ff;
+	box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+	outline: none;
+}
+
+.content-box form button {
+	background-color: #00ffff;
+	color: #0f0f0f;
+	border: none;
+	padding: 10px 20px;
+	font-size: 1rem;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+	font-family: 'Audiowide', sans-serif;
+	text-align: center;
+	box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.content-box form button:hover {
+	background-color: #00cccc;
+	animation: pulse 1s infinite;
+}
+
+.content-box form div {
+	display: flex;
+	gap: 20px;
+}
+
+.content-box form div > div {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
 }
