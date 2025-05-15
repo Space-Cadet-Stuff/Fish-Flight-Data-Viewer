@@ -64,6 +64,7 @@ header h1 {
     font-size: 2.5rem;
     text-transform: uppercase;
     animation: flicker 3s infinite;
+    align-self: center;
 }
 
 .header-buttons {
@@ -356,4 +357,67 @@ input:focus {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+.file-actions {
+    padding: 0;
+    margin: 20px 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.file-actions li {
+    background-color: #222;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideFadeIn 0.6s ease-out forwards;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.file-actions li:hover {
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+}
+
+.file-actions .button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.file-actions form {
+    display: inline;
+}
+
+.file-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.file-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: #4caf50;
+    cursor: pointer;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+    color: #0f0f0f;
+}
+
+a.file-button {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.file-button:hover {
+    background-color: #3e8e41;
+    animation: pulse 1s infinite;
 }

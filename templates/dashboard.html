@@ -28,12 +28,18 @@
     <main>
         <div class="content-box">
             <h2>Welcome, {{ username }}!</h2>
-            <p>Explore your dashboard and manage your account.</p>
             {% if files %}
-            <h2>Your Uploaded Files</h2>
-            <ul>
+            <h3>Your Uploaded Files</h3>
+            <ul class="file-actions">
                 {% for file in files %}
-                <li>{{ file.title }} - {{ file.filename }} - {{ file.upload_time.strftime('%Y-%m-%d') }}</li>
+                <li>{{ file.title }} - {{ file.filename }} - {{ file.upload_time.strftime('%Y-%m-%d') }}
+                    <div class="file-buttons">
+                        <a href="{{ url_for('download_file', file_id=file.id) }}" class="file-button">Download</a>
+                        <form action="{{ url_for('delete_file', file_id=file.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="file-button">Delete</button>
+                        </form>
+                    </div>
+                </li>
                 {% endfor %}
             </ul>
             {% else %}

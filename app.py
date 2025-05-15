@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session as flask_session, flash
+from flask import Flask, render_template, request, redirect, url_for, session as flask_session, flash, send_file
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from setup_db import engine, User, CSVFile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
-import os# last time someone imported this they 
+import os# last time someone imported this they bricked their computer
 
 
 app = Flask(__name__)
@@ -116,7 +116,7 @@ def upload():
         filepath = os.path.join(user_folder, filename)# Save the file to the user-specific folder
         file.save(filepath)# Save the file
 
-        csv_file = CSVFile(# Create a new CSVFile instance
+        csv_file = CSVFile(# Create a new CSVFile instance, and store the form information as metadata in the database
             filename=filename,
             title=title,
             launch_date=launch_date,
@@ -130,6 +130,35 @@ def upload():
         return redirect(url_for("dashboard"))
 
     return render_template("upload.html")
+
+@app.route('/download/<int:file_id>')# Define the route for downloading files
+def download_file(file_id):
+    csv_file = db_session.query(CSVFile).get(file_id)# Get the CSVFile instance by ID
+    if not csv_file or csv_file.user_id != flask_session.get("user_id"):# Check if the file exists and if the user has permission to access it
+        flash("You don't have permission to access that file.", "error")
+        return redirect(url_for("dashboard"))
+
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(csv_file.user_id), csv_file.filename)# Get the file path
+    return send_file(filepath, as_attachment=True)# Send the file as an attachment for download
+
+@app.route('/delete/<int:file_id>', methods=["POST"])# Define the route for deleting files
+def delete_file(file_id):
+    csv_file = db_session.query(CSVFile).get(file_id)# Get the CSVFile instance by ID
+    if not csv_file or csv_file.user_id != flask_session.get("user_id"):# Check if the file exists and if the user has permission to delete it
+        flash("You don't have permission to delete that file.", "error")
+        return redirect(url_for("dashboard"))
+
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(csv_file.user_id), csv_file.filename)# Delete the file from the filesystem
+    try:# Attempt to remove the file
+        os.remove(filepath)
+    except FileNotFoundError:
+        pass  # file might already be gone
+
+    db_session.delete(csv_file)# Remove the database entry
+    db_session.commit()# Commit the session to save the changes
+
+    flash("File deleted successfully.", "success")
+    return redirect(url_for("dashboard"))
 
 
 if __name__ == '__main__':
