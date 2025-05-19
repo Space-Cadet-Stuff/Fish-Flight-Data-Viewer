@@ -111,6 +111,12 @@ def upload():
             return redirect(request.url)
 
         filename = secure_filename(file.filename)# Secure the filename using werkzeug utils
+
+        existing_file = db_session.query(CSVFile).filter_by(filename=filename, user_id=flask_session["user_id"]).first()# Check if the user has already uploaded a file with the same name
+        if existing_file:# If a file with the same name exists, flash an error message
+            flash("You have already uploaded a file with this name.", "error")
+            return redirect(request.url)
+
         user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(flask_session["user_id"]))# Create a user-specific folder
         os.makedirs(user_folder, exist_ok=True)# Create the folder if it doesn't exist
         filepath = os.path.join(user_folder, filename)# Save the file to the user-specific folder

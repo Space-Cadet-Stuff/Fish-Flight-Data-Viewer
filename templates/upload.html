@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Fishflight</title>
+    <title>Upload Data</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/' + (session.get('theme') or 'halo.css')) }}">
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('dashboard') }}">Fish Flight</a></h1>
+        <h1><a href="{{ url_for('dashboard') }}">Fishflight</a></h1>
         <div class="header-buttons">
             <a href="{{ url_for('logout') }}" class="button">Logout</a>
             <a href="{{ url_for('upload') }}" class="button">Upload Data</a>
@@ -28,6 +28,7 @@
     <main>
         <div class="content-box">
             <h2>Upload Data</h2>
+            <p>Choose your data to upload to fishflight</p>
             <form action="" method="POST" enctype="multipart/form-data">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" placeholder="Enter title" required>

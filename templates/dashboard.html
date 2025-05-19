@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Fishflight</title>
+    <title>Fish Flight Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/' + (session.get('theme') or 'halo.css')) }}">
 </head>
 <body>
@@ -32,7 +32,7 @@
             <h3>Your Uploaded Files</h3>
             <ul class="file-actions">
                 {% for file in files %}
-                <li>{{ file.title }} - {{ file.filename }} - {{ file.upload_time.strftime('%Y-%m-%d') }}
+                <li>{{ file.title }} | {{ file.engine_class }} | {{ file.upload_time.strftime('%Y-%m-%d') }}
                     <div class="file-buttons">
                         <a href="{{ url_for('download_file', file_id=file.id) }}" class="file-button">Download</a>
                         <form action="{{ url_for('delete_file', file_id=file.id) }}" method="POST" style="display:inline;">
