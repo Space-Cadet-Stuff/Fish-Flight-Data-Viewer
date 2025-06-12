@@ -113,11 +113,11 @@ def upload():
         filename = secure_filename(file.filename)# Secure the filename using werkzeug utils
 
         existing_file = db_session.query(CSVFile).filter_by(filename=filename, user_id=flask_session["user_id"]).first()# Check if the user has already uploaded a file with the same name
-        if existing_file:# If a file with the same name exists, flash an error message
-            flash("You have already uploaded a file with this name.", "error")
+        if existing_file:# If a file with this same name exists, flash an error message
+            flash("You have already uploaded a document with this same filename", "error")
             return redirect(request.url)
 
-        user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(flask_session["user_id"]))# Create a user-specific folder
+        user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(flask_session["user_id"]))# Access user-specific folder
         os.makedirs(user_folder, exist_ok=True)# Create the folder if it doesn't exist
         filepath = os.path.join(user_folder, filename)# Save the file to the user-specific folder
         file.save(filepath)# Save the file
@@ -166,6 +166,38 @@ def delete_file(file_id):
     flash("File deleted successfully.", "success")
     return redirect(url_for("dashboard"))
 
+@app.route('/visualiser')
+def visualiser():
+    if "user_id" not in flask_session:
+        flash("You need to login to access the visualiser.", "warning")
+        return redirect(url_for("login"))
+
+    user_id = flask_session["user_id"]
+    user_csvs = db_session.query(CSVFile).filter_by(user_id=user_id).all()
+
+    # Helper function to get CSV column headers
+    def get_csv_headers(filepath):
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                return f.readline().strip().split(",")
+        except Exception as e:
+            print(f"Error reading {filepath}: {e}")
+            return ["<error reading file>"]
+
+    # Build the list of file data with headers
+    csv_data = []
+    for csv in user_csvs:
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], str(user_id), csv.filename)
+        headers = get_csv_headers(filepath)
+        csv_data.append({
+            "title": csv.title,
+            "filename": csv.filename,
+            "launch_date": csv.launch_date,
+            "engine_class": csv.engine_class,
+            "headers": headers
+        })
+
+    return render_template("visualiser.html", csv_data=csv_data)
 
 if __name__ == '__main__':
     app.run(debug=True)

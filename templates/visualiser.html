@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Flight Data Viewer </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/' + (session.get('theme') or 'halo.css')) }}">
+</head>
+<body>
+    <header>
+        <h1><a href="{{ url_for('dashboard') }}">Fish Flight</a></h1>
+        <div class="header-buttons">
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+            <a href="{{ url_for('upload') }}" class="button">Upload Data</a>
+            <a href="" class="button">Account Settings</a>
+            <div class="dropdown" style="position: relative;">
+                <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
+                <div class="dropdown-content" id="themeMenu">
+                    <form method="POST" action="{{ url_for('set_theme') }}">
+                        <button type="submit" name="theme" value="halo.css" class="button">UNSC</button>
+                        <button type="submit" name="theme" value="blade_runner.css" class="button">Tyrell</button>
+                        <button type="submit" name="theme" value="tron.css" class="button">ENCOM</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="content-box">
+            <div style="display: flex; height: 400px;">
+                <div style="flex: 1; border-right: 2px solid #ccc; padding: 16px;">
+                    <h3>Your CSV Files</h3>
+                    <ul>
+                        {% if csv_data %}
+                            {% for csv in csv_data %}
+                                <li>
+                                    <strong>{{ csv.title }}</strong><br>
+                                    <small>{{ csv.filename }} | {{ csv.launch_date }} | {{ csv.engine_class }}</small><br>
+                                    <hr style="margin: 16px 0;">
+                                    <ul style="margin-top: 2px; margin-bottom: 2px; padding-left: 18px; font-size: 0.9em; line-height: 1.2;">
+                                        {% for header in csv.headers %}
+                                            <li style="margin-bottom: 0; padding: 0;">{{ header }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>No CSVs uploaded yet.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div style="flex: 2; padding: 16px;">
+                    <p>Graph here</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }} fade-in" onclick="dismissAlert(this)">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <script src="static/js/scripts.js"></script>
+</body>
+</html>
