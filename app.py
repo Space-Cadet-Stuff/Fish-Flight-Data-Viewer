@@ -4,7 +4,6 @@ from sqlalchemy.orm import sessionmaker
 from setup_db import engine, User, CSVFile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from datetime import datetime
 import os# last time someone imported this they bricked their computer
 
 
