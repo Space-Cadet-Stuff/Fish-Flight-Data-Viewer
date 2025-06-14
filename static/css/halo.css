@@ -106,15 +106,10 @@ main {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
     max-width: 800px;
+    height: 550px;
     margin: 20px auto;
     animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;
     overflow: auto;
-}
-
-.content-box h2 {
-    color: #4caf50;
-    text-align: center;
-    font-size: 2rem;
 }
 
 .content-box p {

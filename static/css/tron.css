@@ -103,13 +103,15 @@ main {
 }
 
 .content-box {
-    background-color: #111111;
+    background-color: #1a1a1a;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
     max-width: 800px;
+    height: 550px;
     margin: 20px auto;
     animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;
+    overflow: auto;
 }
 
 .content-box h2 {

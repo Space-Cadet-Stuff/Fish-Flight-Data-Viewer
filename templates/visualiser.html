@@ -27,7 +27,7 @@
     </header>
     <main>
         <div class="content-box">
-            <div style="display: flex; height: 400px;">
+            <div style="display: flex; height: 200%;">
                 <div style="flex: 1; border-right: 2px solid #ccc; padding: 16px;">
                     <h3>Your CSV Files</h3>
                     <ul>
@@ -35,7 +35,7 @@
                             {% for csv in csv_data %}
                                 <li>
                                     <strong>{{ csv.title }}</strong><br>
-                                    <small>{{ csv.filename }} | {{ csv.launch_date }} | {{ csv.engine_class }}</small><br>
+                                    <small>{{ csv.launch_date }} | {{ csv.engine_class }}</small>
                                     <hr style="margin: 16px 0;">
                                     <ul style="margin-top: 2px; margin-bottom: 2px; padding-left: 18px; font-size: 0.9em; line-height: 1.2;">
                                         {% for header in csv.headers %}
