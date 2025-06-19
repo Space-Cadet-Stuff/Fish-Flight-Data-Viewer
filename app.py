@@ -198,5 +198,61 @@ def visualiser():
 
     return render_template("visualiser.html", csv_data=csv_data)
 
+@app.route('/account_settings', methods=['GET', 'POST'])
+def account_settings():
+    if "user_id" not in flask_session:
+        flash("You need to login to access account settings.", "warning")
+        return redirect(url_for("login"))
+
+    user = db_session.query(User).get(flask_session["user_id"])
+
+    if request.method == "POST":
+        if "username" in request.form and "email" in request.form:
+            new_username = request.form.get("username").strip()
+            new_email = request.form.get("email").strip()
+            new_password = request.form.get("password")
+            confirm_password = request.form.get("confirm_password")
+
+            # Check for username/email conflicts
+            existing_user = db_session.query(User).filter(
+                ((User.username == new_username) | (User.email == new_email)) & (User.id != user.id)
+            ).first()
+            if existing_user:
+                flash("Username or email already taken.", "error")
+                return redirect(url_for("account_settings"))
+
+            user.username = new_username
+            user.email = new_email
+
+            if new_password:
+                if new_password != confirm_password:
+                    flash("Passwords do not match.", "error")
+                    return redirect(url_for("account_settings"))
+                user.password = generate_password_hash(new_password)
+
+            db_session.commit()
+            flask_session["username"] = user.username
+            flash("Account updated successfully.", "success")
+            return redirect(url_for("account_settings"))
+        else:
+            # Handle account deletion
+            # Delete user's files
+            user_files = db_session.query(CSVFile).filter_by(user_id=user.id).all()
+            for csv_file in user_files:
+                filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(user.id), csv_file.filename)
+                try:
+                    os.remove(filepath)
+                except FileNotFoundError:
+                    pass
+                db_session.delete(csv_file)
+            db_session.delete(user)
+            db_session.commit()
+            flask_session.clear()
+            flash("Your account and all associated files have been deleted.", "info")
+            return redirect(url_for("index"))
+
+    return render_template("account_settings.html", current_user=user)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

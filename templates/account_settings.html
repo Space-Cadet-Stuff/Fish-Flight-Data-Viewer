@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Data</title>
+    <title>Account Settings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/' + (session.get('theme') or 'halo.css')) }}">
 </head>
 <body>
@@ -12,7 +12,6 @@
         <div class="header-buttons">
             <a href="{{ url_for('logout') }}" class="button">Logout</a>
             <a href="{{ url_for('visualiser') }}" class="button">Data Viewer</a>
-            <a href="{{ url_for('account_settings') }}" class="button">Account Settings</a>
             <div class="dropdown" style="position: relative;">
                 <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
                 <div class="dropdown-content" id="themeMenu">
@@ -27,27 +26,25 @@
     </header>
     <main>
         <div class="content-box">
-            <h2>Upload Data</h2>
-            <p>Choose your data to upload to fishflight</p>
-            <form action="" method="POST" enctype="multipart/form-data">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" placeholder="Enter title" required>
+            <h2>Account Settings</h2>
+            <form action="{{ url_for('account_settings') }}" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ current_user.username }}" required>
 
-            <div style="display: flex; gap: 20px;">
-                <div>
-                    <label for="launchDate">Launch Date:</label>
-                    <input type="date" id="launchDate" name="launchDate">
-                </div>
-                <div>
-                    <label for="engineClass">Engine Class:</label>
-                    <input type="text" id="engineClass" name="engineClass" placeholder="Enter engine class" required>
-                </div>
-            </div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ current_user.email }}" required>
 
-            <label for="csvFile">Datasheet (CSV):</label>
-            <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter new password">
 
-            <button type="submit" class="button">Upload</button>
+                <label for="confirm_password">Confirm New Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
+
+                <button type="submit" class="button">Save Changes</button>
+            </form>
+            <hr>
+            <form action="{url_for('delete_account')}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+                <button type="submit" class="button">Delete Account</button>
             </form>
         </div>
     </main>
