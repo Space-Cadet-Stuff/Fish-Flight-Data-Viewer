@@ -440,3 +440,16 @@ a.file-button {
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
 }
+
+.title-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.visualiser-selector {
+    max-width: 110%;
+}
+
+.selector {
+    width: 10%;
+}

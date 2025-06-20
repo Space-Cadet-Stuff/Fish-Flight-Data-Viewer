@@ -105,7 +105,7 @@ main {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-    max-width: 800px;
+    max-width: 1600px;
     height: 550px;
     margin: 20px auto;
     animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;
@@ -416,4 +416,17 @@ a.file-button {
 .file-button:hover {
     background-color: #3e8e41;
     animation: pulse 1s infinite;
+}
+
+.title-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.visualiser-selector {
+    max-width: 110%;
+}
+
+.selector {
+    width: 10%;
 }

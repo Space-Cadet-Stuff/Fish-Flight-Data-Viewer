@@ -28,13 +28,14 @@
     <main>
         <div class="content-box">
             <div style="display: flex; height: 200%;">
-                <div style="flex: 1; border-right: 2px solid #ccc; padding: 16px;">
+                <div> 
                     <h3>Your CSV Files</h3>
                     <ul>
                         {% if csv_data %}
                             {% for csv in csv_data %}
-                                <li>
-                                    <strong>{{ csv.title }}</strong><br>
+                                <li class="visualiser-selector">
+                                    <div class="title-box"><strong>{{ csv.title }}</strong>:<input type="checkbox" class="selector"></input></div>
+                                    <br>
                                     <small>{{ csv.launch_date }} | {{ csv.engine_class }}</small>
                                     <hr style="margin: 16px 0;">
                                     <ul style="margin-top: 2px; margin-bottom: 2px; padding-left: 18px; font-size: 0.9em; line-height: 1.2;">
@@ -50,7 +51,7 @@
                     </ul>
                 </div>
                 <div style="flex: 2; padding: 16px;">
-                    <p>Graph here</p>
+                    <canvas id="Graph" width="800" height="400"></canvas>
                 </div>
             </div>
         </div>
@@ -67,5 +68,44 @@
     {% endif %}
     {% endwith %}
     <script src="static/js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('Graph').getContext('2d');
+
+        const flightChart = new Chart(ctx, {
+            type: 'dot',
+            data: {
+                labels: [],  // time axis (x)
+                datasets: [] // will fill this later
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Flight Telemetry'
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time (ms)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>
