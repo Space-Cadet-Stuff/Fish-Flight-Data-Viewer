@@ -118,7 +118,7 @@ main {
     padding: 20px;
     border-radius: 10px;
 	box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
-    max-width: 1600px;
+    max-width: 800px;
     height: 550px;
     margin: 20px auto;
     animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;
@@ -206,7 +206,7 @@ input:focus {
 	position: absolute;
 	top: 100%;
     right: 0;
-	width: 100%;
+	width: 10%;
 	background-color: #1a1a1a;
 	z-index: 1;
 	padding: 10px;
@@ -465,4 +465,29 @@ a.file-button {
 
 .selector {
     width: 10%;
+}
+
+.content-box-visualiser {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+	box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+    max-width: 1200px;
+    height: 550px;
+    margin: 20px auto;
+    animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;
+    overflow: auto;
+}
+.content-box-visualiser ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.content-box-visualiser ul li {
+	background-color: #333333;
+	margin: 5px 0;
+	padding: 10px;
+	border-radius: 5px;
+	color: #d0d0d0;
+	box-shadow: 0 0 10px #00ffff;
 }
