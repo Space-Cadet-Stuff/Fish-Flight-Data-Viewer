@@ -175,14 +175,14 @@ input:focus {
     flex-direction: column;
     width: fit-content;
     animation: slideFadeIn 1s ease-out forwards;
+    transform: translateZ(1000);
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
-    width: 100%;
+    width: 10%;
     background-color: #1a1a1a;
     z-index: 1;
     padding: 10px;
@@ -191,6 +191,7 @@ input:focus {
     margin-top: 5px;
     box-sizing: border-box;
     animation: slideFadeIn 1s ease-out forwards;
+    right: 0;
 }
 
 .dropdown-content form {

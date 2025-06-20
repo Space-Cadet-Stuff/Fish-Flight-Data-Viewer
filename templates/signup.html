@@ -12,15 +12,8 @@
         <div class="header-buttons">
             <a href="{{ url_for('login') }}" class="button">Login</a>
             <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
-            <div class="dropdown" style="position: relative;">
+            <div class="dropdown">
                 <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
-                <div class="dropdown-content" id="themeMenu">
-                    <form method="POST" action="{{ url_for('set_theme') }}">
-                        <button type="submit" name="theme" value="halo.css" class="button">UNSC</button>
-                        <button type="submit" name="theme" value="blade_runner.css" class="button">Tyrell</button>
-                        <button type="submit" name="theme" value="tron.css" class="button">ENCOM</button>
-                    </form>
-                </div>
             </div>
         </div>
     </header>
@@ -56,6 +49,13 @@
     </div>
     {% endif %}
     {% endwith %}
+    <div class="dropdown-content" id="themeMenu" style="position: absolute; top: 70px; right: 20px;">
+        <form method="POST" action="{{ url_for('set_theme') }}">
+            <button type="submit" name="theme" value="halo.css" class="button">UNSC</button>
+            <button type="submit" name="theme" value="blade_runner.css" class="button">Tyrell</button>
+            <button type="submit" name="theme" value="tron.css" class="button">ENCOM</button>
+        </form>
+    </div>
     <script src="static/js/scripts.js"></script>
 </body>
 </html>
