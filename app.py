@@ -166,7 +166,7 @@ def delete_file(file_id):
     flash("File deleted successfully.", "success")
     return redirect(url_for("dashboard"))
 
-@app.route('/visualiser')
+@app.route('/visualiser')# Define the route for the visualiser
 def visualiser():
     if "user_id" not in flask_session:
         flash("You need to login to access the visualiser.", "warning")
@@ -175,21 +175,19 @@ def visualiser():
     user_id = flask_session["user_id"]
     user_csvs = db_session.query(CSVFile).filter_by(user_id=user_id).all()
 
-    # Helper function to get CSV column headers
-    def get_csv_headers(filepath):
+    def get_csv_headers(filepath):# Helper function to get CSV column headers
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 return f.readline().strip().split(",")
         except Exception as e:
             print(f"Error reading {filepath}: {e}")
             return ["<error reading file>"]
-
-    # Build the list of file data with headers
-    csv_data = []
+        
+    csv_data = []# Build the list of file data with headers
     for csv in user_csvs:
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], str(user_id), csv.filename)
         headers = get_csv_headers(filepath)
-        csv_data.append({
+        csv_data.append({# Store the CSV file metadata and headers in a dictionary
             "id": csv.id,
             "title": csv.title,
             "filename": csv.filename,
@@ -201,7 +199,7 @@ def visualiser():
 
     return render_template("visualiser.html", csv_data=csv_data)
 
-@app.route('/account_settings', methods=['GET', 'POST'])
+@app.route('/account_settings', methods=['GET', 'POST'])# Define the route for account settings
 def account_settings():
     if "user_id" not in flask_session:
         flash("You need to login to access account settings.", "warning")
@@ -209,7 +207,7 @@ def account_settings():
 
     user = db_session.query(User).get(flask_session["user_id"])
 
-    if request.method == "POST":
+    if request.method == "POST":# Handle form submission for updating account settings or deleting the account
         if "username" in request.form and "email" in request.form:
             new_username = request.form.get("username").strip()
             new_email = request.form.get("email").strip()
@@ -220,7 +218,7 @@ def account_settings():
             existing_user = db_session.query(User).filter(
                 ((User.username == new_username) | (User.email == new_email)) & (User.id != user.id)
             ).first()
-            if existing_user:
+            if existing_user:# If a user with the same username or email exists, flash an error message
                 flash("Username or email already taken.", "error")
                 return redirect(url_for("account_settings"))
 
