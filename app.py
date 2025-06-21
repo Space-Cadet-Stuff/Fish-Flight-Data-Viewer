@@ -236,9 +236,7 @@ def account_settings():
             flash("Account updated successfully.", "success")
             return redirect(url_for("account_settings"))
         else:
-            # Handle account deletion
-            # Delete user's files
-            user_files = db_session.query(CSVFile).filter_by(user_id=user.id).all()
+            user_files = db_session.query(CSVFile).filter_by(user_id=user.id).all()# Handle account deletion and delete the user's files
             for csv_file in user_files:
                 filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(user.id), csv_file.filename)
                 try:
@@ -254,34 +252,32 @@ def account_settings():
 
     return render_template("account_settings.html", current_user=user)
 
-@app.route('/get_csv_data/<int:file_id>')
+@app.route('/get_csv_data/<int:file_id>')# Allow the user to get the data from a CSV file for the graph
 def get_csv_data(file_id):
     csv_file = db_session.query(CSVFile).get(file_id)
     if not csv_file or csv_file.user_id != flask_session.get("user_id"):
         return jsonify({"error": "Unauthorized or file not found"}), 403
 
-    filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(csv_file.user_id), csv_file.filename)
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(csv_file.user_id), csv_file.filename)# Get the file path
     try:
         with open(filepath, newline='') as f:
             reader = csv.DictReader(f)
             rows = [row for row in reader]
 
-        # Remove columns that don't contain any data
-        if rows:
+        if rows:# Remove columns that don't contain any data
             columns = list(rows[0].keys())
             columns_with_data = [
                 col for col in columns
                 if any(row.get(col, "").strip() != "" for row in rows)
             ]
-            # Filter out empty columns from each row
-            filtered_rows = [
+            filtered_rows = [# Filter out empty columns from each row
                 {col: row[col] for col in columns_with_data}
                 for row in rows
             ]
         else:
             filtered_rows = []
 
-        return jsonify(filtered_rows)
+        return jsonify(filtered_rows)# Return the filtered rows as JSON
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
