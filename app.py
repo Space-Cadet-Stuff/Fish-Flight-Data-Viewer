@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session as flask_session, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, session as flask_session, flash, send_file, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from setup_db import engine, User, CSVFile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os# last time someone imported this they bricked their computer
+import csv
 
 
 app = Flask(__name__)
@@ -189,12 +190,14 @@ def visualiser():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], str(user_id), csv.filename)
         headers = get_csv_headers(filepath)
         csv_data.append({
+            "id": csv.id,
             "title": csv.title,
             "filename": csv.filename,
             "launch_date": csv.launch_date,
             "engine_class": csv.engine_class,
             "headers": headers
         })
+
 
     return render_template("visualiser.html", csv_data=csv_data)
 
@@ -252,6 +255,37 @@ def account_settings():
             return redirect(url_for("index"))
 
     return render_template("account_settings.html", current_user=user)
+
+@app.route('/get_csv_data/<int:file_id>')
+def get_csv_data(file_id):
+    csv_file = db_session.query(CSVFile).get(file_id)
+    if not csv_file or csv_file.user_id != flask_session.get("user_id"):
+        return jsonify({"error": "Unauthorized or file not found"}), 403
+
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], str(csv_file.user_id), csv_file.filename)
+    try:
+        with open(filepath, newline='') as f:
+            reader = csv.DictReader(f)
+            rows = [row for row in reader]
+
+        # Remove columns that don't contain any data
+        if rows:
+            columns = list(rows[0].keys())
+            columns_with_data = [
+                col for col in columns
+                if any(row.get(col, "").strip() != "" for row in rows)
+            ]
+            # Filter out empty columns from each row
+            filtered_rows = [
+                {col: row[col] for col in columns_with_data}
+                for row in rows
+            ]
+        else:
+            filtered_rows = []
+
+        return jsonify(filtered_rows)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':

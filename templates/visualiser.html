@@ -27,7 +27,7 @@
                         {% if csv_data %}
                             {% for csv in csv_data %}
                                 <li class="visualiser-selector">
-                                    <div class="title-box"><strong>{{ csv.title }}</strong>:<input type="checkbox" class="selector"></input></div>
+                                    <div class="title-box"><strong>{{ csv.title }}</strong>:<input type="checkbox" class="selector" data-file-id="{{ csv.id }}"></input></div>
                                     <br>
                                     <small>{{ csv.launch_date }} | {{ csv.engine_class }}</small>
                                     <hr style="margin: 16px 0;">
@@ -71,27 +71,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('Graph').getContext('2d');
-
-        const flightChart = new Chart(ctx, {
-            type: 'dot',
+        const chart = new Chart(ctx, {
+            type: 'line',
             data: {
-                labels: [],  // time axis (x)
-                datasets: [] // will fill this later
+                datasets: []
             },
             options: {
                 responsive: true,
+                parsing: false,
                 plugins: {
                     title: {
                         display: true,
                         text: 'Flight Telemetry'
-                    },
-                    legend: {
-                        display: true,
-                        position: 'top'
                     }
                 },
                 scales: {
                     x: {
+                        type: 'linear',
                         title: {
                             display: true,
                             text: 'Time (ms)'
@@ -99,11 +95,60 @@
                     },
                     y: {
                         title: {
-                            display: true
+                            display: true,
+                            text: 'Value'
                         }
                     }
                 }
             }
+        });
+
+        const loadedFiles = {}; // Cache loaded CSVs to avoid re-fetching
+
+        document.querySelectorAll('.selector').forEach(checkbox => {
+            checkbox.addEventListener('change', async () => {
+                const fileId = checkbox.dataset.fileId;
+
+                if (checkbox.checked) {
+                    // Fetch + plot the CSV
+                    if (!loadedFiles[fileId]) {
+                        const res = await fetch(`/get_csv_data/${fileId}`);
+                        const data = await res.json();
+                        if (data.error) {
+                            alert(data.error);
+                            return;
+                        }
+                        loadedFiles[fileId] = data;
+                    }
+
+                    const rows = loadedFiles[fileId];
+                    const keys = Object.keys(rows[0]);
+                    const timeKey = keys.find(k => k.toLowerCase().includes("time")) || keys[0];
+
+                    // Add each non-time column as a dataset
+                    keys.forEach(col => {
+                        if (col === timeKey) return;
+                        const dataset = {
+                            label: `${col} (File ${fileId})`,
+                            data: rows.map(r => ({
+                                x: parseFloat(r[timeKey]),
+                                y: parseFloat(r[col])
+                            })),
+                            borderWidth: 2,
+                            tension: 0.2,
+                            fileId: fileId,
+                            column: col
+                        };
+                        chart.data.datasets.push(dataset);
+                    });
+
+                    chart.update();
+                } else {
+                    // Remove datasets for this file
+                    chart.data.datasets = chart.data.datasets.filter(ds => ds.fileId !== fileId);
+                    chart.update();
+                }
+            });
         });
     </script>
 </body>
