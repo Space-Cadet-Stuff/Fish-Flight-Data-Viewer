@@ -280,6 +280,36 @@ def get_csv_data(file_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/florp', methods=['GET', 'POST'])
+def florp():
+    if "user_id" not in flask_session:
+        flash("You need to login first", "warning")
+        return redirect(url_for('login'))
+
+    picked_up = False
+    if "florp_picked_up" in flask_session:
+        picked_up = flask_session["florp_picked_up"]
+
+    if request.method == "POST" and request.form.get("pick_up") == "1":
+        flask_session["florp_picked_up"] = True
+        picked_up = True
+
+    return render_template("florp.html", picked_up=picked_up)
+
+@app.route('/jakito', methods=['GET', 'POST'])
+def jakito():
+    if "user_id" not in flask_session:
+        flash("You need to login first", "warning")
+        return redirect(url_for('login'))
+
+    sacrificed = flask_session.get("jakito_sacrificed", False)
+    has_florp = flask_session.get("florp_picked_up", False)
+
+    if request.method == "POST" and has_florp and not sacrificed and request.form.get("sacrifice") == "1":
+        flask_session["jakito_sacrificed"] = True
+        sacrificed = True
+
+    return render_template("jakito.html", sacrificed=sacrificed, has_florp=has_florp)
 
 if __name__ == '__main__':
     app.run(debug=True)

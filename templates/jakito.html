@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jakito</title>
+        <meta charset="UTF-8">
+    </head>
+    <body style="background-color: black; color: red; text-align: center;">
+        {% if not sacrificed %}
+            <h1>I AM JAKITO. BRING ME A SACTIFICE. IT WILL GIVE ME THE POWER TO ESCAPE</h1>
+            {% if has_florp %}
+                <form method="post">
+                    <button type="submit" name="sacrifice" value="1" style="color: red; background: none; border: 1px solid red; padding: 10px 20px; font-size: 1.2em;">Sacrifice Florp</button>
+                </form>
+            {% else %}
+                <div style="margin-top: 30px; color: red;">It appears you have nothing to sacrifice.</div>
+            {% endif %}
+        {% else %}
+            <div id="sacrifice-message" style="font-size: 2em; margin-top: 100px;">THANK YOU. NOW I SHALL LAY WASTE TO THIS WORLD</div>
+            <img id="jakito-img" src="{{ url_for('static', filename='images/jakito.png') }}" alt="Jakito" style="position: fixed; left: 50%; transform: translateX(-50%); bottom: -400px; width: 300px; transition: bottom 2s;" />
+            <script>
+                setTimeout(function() {
+                    document.getElementById('jakito-img').style.bottom = '0px';
+                }, 5000);
+                setTimeout(function() {
+                    window.location.href = "https://www.youtube.com/embed/LrJ_AXGz68s?autoplay=1";
+                }, 9000);
+            </script>
+        {% endif %}
+    </body>
+</html>

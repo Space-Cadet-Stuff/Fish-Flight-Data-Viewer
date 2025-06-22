@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Florp</title>
+        <meta charset="UTF-8">
+    </head>
+    {% if not picked_up %}
+        <body style="background-color: black; color: white; text-align: center;">
+            <h1>You found Florp!</h1>
+            <img src="{{ url_for('static', filename='images/florp.png') }}" alt="Florp">
+            <form method="post">
+                <button type="submit" name="pick_up" value="1">Pick up florp</button>
+            </form>
+        </body>
+    {% else %}
+        <body style="background-color: black; color: white; text-align: center;">
+            <h1>Hmm... there doesn't seem to be anything here.</h1>
+        </body>
+    {% endif %}
+</html>
