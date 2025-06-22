@@ -8,12 +8,16 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('dashboard') }}">Fish Flight</a></h1>
+        <h1>
+            <a href="{{ url_for('dashboard') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px; vertical-align: middle; margin-bottom: 5px;">
+            Fish Flight
+            </a>
+        </h1>
         <div class="header-buttons">
-            <a href="{{ url_for('login') }}" class="button">Login</a>
-            <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
+            <a href="{{ url_for('signup') }}" class="button"><img src="{{ url_for('static', filename='images/signup.png') }}" alt="signup" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Sign Up</a>
             <div class="dropdown">
-                <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
+                <a class="button" onclick="toggleThemeMenu()"><img src="{{ url_for('static', filename='images/changetheme.png') }}" alt="change theme" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Change Theme</a>
             </div>
         </div>
     </header>

@@ -8,12 +8,17 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('dashboard') }}">Fish Flight</a></h1>
+        <h1>
+            <a href="{{ url_for('dashboard') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px; vertical-align: middle; margin-bottom: 5px;">
+            Fish Flight
+            </a>
+        </h1>
         <div class="header-buttons">
-            <a href="{{ url_for('login') }}" class="button">Login</a>
-            <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
+            <a href="{{ url_for('login') }}" class="button"><img src="{{ url_for('static', filename='images/login.png') }}" alt="login" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Login</a>
+            <a href="{{ url_for('signup') }}" class="button"><img src="{{ url_for('static', filename='images/signup.png') }}" alt="signup" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Sign Up</a>
             <div class="dropdown">
-                <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
+                <a class="button" onclick="toggleThemeMenu()"><img src="{{ url_for('static', filename='images/changetheme.png') }}" alt="change theme" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Change Theme</a>
             </div>
         </div>
     </header>
@@ -21,7 +26,7 @@
         <div class="content-box">
             <h2>Welcome to Fish Flight!</h2>
             <p>Fishflight is a website designed to help view and compare data from model rocket launches without having to dive through thousands of lines on a spreadsheet.</p>
-            <img src="https://upload.wikimedia.org/wikipedia/en/7/70/Bob_at_Easel.jpg" alt="Placeholder Image">
+            <img src="{{ url_for('static', filename='images/screenshot-1.png') }}" alt="Graph Example">
             <p>Fishflight lets users:</p>
             <ul>
                 <li>Store Data: Allows users to upload and store their launch data for use later.</li>
@@ -29,8 +34,8 @@
                 <li>Specific Data: Choose what information from the flight you want to see (Acceleration, Altitude, Pressure, etc.)</li>
             </ul>
             <p>Fishflight is designed to work with the <a href="https://www.robinson-aerospace.com/raslogger" target="_blank">Robinson Aerospace Rocket Datalogger</a></p>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/_portrait_crop.jpg/800px_portrait_crop.jpg" alt="Another Placeholder Image">
-            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <img src="{{ url_for('static', filename='images/screenshot-2.png') }}" alt="Another Placeholder Image">
+            <p>Upload your data in an easy-to use list with just a little extra information, and the app will do the rest! Just head to the visualiser page, choose what rocket datasheets you want and what datasets you need, and the app will do the rest!</p>
         </div>
     </main>
     {% with messages = get_flashed_messages(with_categories=true) %}

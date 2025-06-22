@@ -105,7 +105,7 @@ main {
     padding: 20px;
     border-radius: 0;
     box-shadow: 0 0 0 4px #fff, 0 0 15px #000;
-    max-width: 800px;
+    max-width: 900px;
     height: 550px;
     margin: 20px auto;
     animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;

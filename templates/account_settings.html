@@ -8,12 +8,18 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('dashboard') }}">Fish Flight</a></h1>
+        <h1>
+            <a href="{{ url_for('dashboard') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px; vertical-align: middle; margin-bottom: 5px;">
+            Fish Flight
+            </a>
+        </h1>
         <div class="header-buttons">
-            <a href="{{ url_for('logout') }}" class="button">Logout</a>
-            <a href="{{ url_for('visualiser') }}" class="button">Data Viewer</a>
+            <a href="{{ url_for('logout') }}" class="button"><img src="{{ url_for('static', filename='images/logout.png') }}" alt="logout" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Logout</a>
+            <a href="{{ url_for('upload') }}" class="button"><img src="{{ url_for('static', filename='images/upload.png') }}" alt="upload" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Upload Data</a>
+            <a href="{{ url_for('visualiser') }}" class="button"><img src="{{ url_for('static', filename='images/chart.png') }}" alt="visualiser" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Data Viewer</a>
             <div class="dropdown">
-                <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
+                <a class="button" onclick="toggleThemeMenu()"><img src="{{ url_for('static', filename='images/changetheme.png') }}" alt="change theme" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Change Theme</a>
             </div>
         </div>
     </header>

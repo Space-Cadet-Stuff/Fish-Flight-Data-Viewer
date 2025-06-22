@@ -8,14 +8,19 @@
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('dashboard') }}">Fish Flight</a></h1>
+        <h1>
+            <a href="{{ url_for('dashboard') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px; vertical-align: middle; margin-bottom: 5px;">
+            Fish Flight
+            </a>
+        </h1>
         <div class="header-buttons">
-            <a href="{{ url_for('logout') }}" class="button">Logout</a>
-            <a href="{{ url_for('upload') }}" class="button">Upload Data</a>
-            <a href="{{ url_for('visualiser') }}" class="button">Data Viewer</a>
-            <a href="{{ url_for('account_settings') }}" class="button">Account Settings</a>
+            <a href="{{ url_for('logout') }}" class="button"><img src="{{ url_for('static', filename='images/logout.png') }}" alt="logout" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Logout</a>
+            <a href="{{ url_for('upload') }}" class="button"><img src="{{ url_for('static', filename='images/upload.png') }}" alt="upload" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Upload Data</a>
+            <a href="{{ url_for('visualiser') }}" class="button"><img src="{{ url_for('static', filename='images/chart.png') }}" alt="visualiser" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Data Viewer</a>
+            <a href="{{ url_for('account_settings') }}" class="button"><img src="{{ url_for('static', filename='images/settings.png') }}" alt="settings" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Account Settings</a>
             <div class="dropdown">
-                <a class="button" onclick="toggleThemeMenu()">Change Theme</a>
+                <a class="button" onclick="toggleThemeMenu()"><img src="{{ url_for('static', filename='images/changetheme.png') }}" alt="change theme" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Change Theme</a>
             </div>
         </div>
     </header>
@@ -28,9 +33,9 @@
                 {% for file in files %}
                 <li>{{ file.title }} | {{ file.engine_class }} | {{ file.upload_time.strftime('%Y-%m-%d') }}
                     <div class="file-buttons">
-                        <a href="{{ url_for('download_file', file_id=file.id) }}" class="file-button">Download</a>
+                        <a href="{{ url_for('download_file', file_id=file.id) }}" class="file-button"><img src="{{ url_for('static', filename='images/download.png') }}" alt="download" style="height: 20px; vertical-align: middle; margin-right: 10px;">Download</a>
                         <form action="{{ url_for('delete_file', file_id=file.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="file-button">Delete</button>
+                            <button type="submit" class="file-button"><img src="{{ url_for('static', filename='images/delete.png') }}" alt="delete" style="height: 20px; vertical-align: middle; margin-right: 10px;">Delete</button>
                         </form>
                     </div>
                 </li>
