@@ -230,54 +230,55 @@ function showBadTimeBox() {
         playMegalovania();
         startBouncingSans();
         spawnControllablePlayer();
-        };
-        }
+    };
+}
 
-        function switchToSansTheme() {
-        let link = document.querySelector('link[rel="stylesheet"]');
-        if (link) {
+function switchToSansTheme() {
+    let link = document.querySelector('link[rel="stylesheet"]');
+    if (link) {
         link.href = '/static/css/sans.css';
-        } else {
+    } else {
         link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = '/static/css/sans.css';
         document.head.appendChild(link);
-        }
-        }
+    }
+}
 
-        let megalovaniaAudio = null;
-        function playMegalovania() {
-        if (megalovaniaAudio) {
+let megalovaniaAudio = null;
+function playMegalovania() {
+    if (megalovaniaAudio) {
         megalovaniaAudio.pause();
         megalovaniaAudio = null;
-        }
-        megalovaniaAudio = new Audio('/static/sounds/megalovania.mp3');
-        megalovaniaAudio.loop = true;
-        megalovaniaAudio.play();
-        }
+    }
+    megalovaniaAudio = new Audio('/static/sounds/megalovania.mp3');
+    megalovaniaAudio.loop = true;
+    megalovaniaAudio.play();
+}
 
-        // Bouncing Sans GIF
-        let sansBounceInterval = null;
-        function startBouncingSans() {
-        if (document.getElementById('bouncing-sans')) return; // Only one instance
+// Bouncing Sans GIF
+let sansBounceInterval = null;
+let sansHitCount = 0;
+function startBouncingSans() {
+    if (document.getElementById('bouncing-sans')) return; // Only one instance
 
-        const img = document.createElement('img');
-        img.src = '/static/images/sans.gif';
-        img.id = 'bouncing-sans';
-        img.style.position = 'fixed';
-        img.style.left = '50px';
-        img.style.top = '50px';
-        img.style.width = (100) + 'px';
-        img.style.height = (125) + 'px';
-        img.style.zIndex = 10002;
-        img.style.pointerEvents = 'none';
-        document.body.appendChild(img);
+    const img = document.createElement('img');
+    img.src = '/static/images/sans.gif';
+    img.id = 'bouncing-sans';
+    img.style.position = 'fixed';
+    img.style.left = '50px';
+    img.style.top = '50px';
+    img.style.width = (100) + 'px';
+    img.style.height = (125) + 'px';
+    img.style.zIndex = 10002;
+    img.style.pointerEvents = 'none';
+    document.body.appendChild(img);
 
-        let x = 50, y = 50;
-        let dx = 3 + Math.random() * 2, dy = 3 + Math.random() * 2;
-        let w = 100 * 0.75, h = 100 * 0.75;
+    let x = 50, y = 50;
+    let dx = 3 + Math.random() * 2, dy = 3 + Math.random() * 2;
+    let w = 100 * 0.75, h = 100 * 0.75;
 
-        function move() {
+    function move() {
         const ww = window.innerWidth;
         const wh = window.innerHeight;
         x += dx;
@@ -288,146 +289,311 @@ function showBadTimeBox() {
         y = Math.max(0, Math.min(y, wh - h));
         img.style.left = x + 'px';
         img.style.top = y + 'px';
-        }
+    }
 
-        sansBounceInterval = setInterval(move, 16);
+    sansBounceInterval = setInterval(move, 16);
 
-        // Remove on page unload or if needed
-        window.addEventListener('beforeunload', stopBouncingSans);
-        }
+    // Remove on page unload or if needed
+    window.addEventListener('beforeunload', stopBouncingSans);
+}
 
-        function stopBouncingSans() {
-        if (sansBounceInterval) {
+function stopBouncingSans() {
+    if (sansBounceInterval) {
         clearInterval(sansBounceInterval);
         sansBounceInterval = null;
-        }
-        const img = document.getElementById('bouncing-sans');
-        if (img && img.parentNode) img.parentNode.removeChild(img);
-        }
+    }
+    const img = document.getElementById('bouncing-sans');
+    if (img && img.parentNode) img.parentNode.removeChild(img);
+}
 
-        // --- PLAYER CONTROL ---
-        let playerInterval = null;
-        let playerPos = { x: 0, y: 0 };
-        let playerSpeed = 5;
-        let playerSize = 32 * 0.75;
-        let playerElem = null;
-        let playerKeys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+// --- PLAYER CONTROL ---
+let playerInterval = null;
+let playerPos = { x: 0, y: 0 };
+let playerSpeed = 5;
+let playerSize = 32 * 0.75;
+let playerElem = null;
+let playerKeys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+let canShoot = true;
+let bullets = [];
+let bulletInterval = null;
 
-        function spawnControllablePlayer() {
-        if (document.getElementById('player-sprite')) return;
+function spawnControllablePlayer() {
+    if (document.getElementById('player-sprite')) return;
 
-        // Center the player
-        playerPos.x = Math.floor((window.innerWidth - playerSize) / 2);
-        playerPos.y = Math.floor((window.innerHeight - playerSize) / 2);
+    // Center the player
+    playerPos.x = Math.floor((window.innerWidth - playerSize) / 2);
+    playerPos.y = Math.floor((window.innerHeight - playerSize) / 2);
 
-        playerElem = document.createElement('img');
-        playerElem.id = 'player-sprite';
-        playerElem.src = '/static/images/player.png';
-        playerElem.style.position = 'fixed';
-        playerElem.style.left = playerPos.x + 'px';
-        playerElem.style.top = playerPos.y + 'px';
-        playerElem.style.width = playerSize + 'px';
-        playerElem.style.height = playerSize + 'px';
-        playerElem.style.zIndex = 10003;
-        playerElem.style.pointerEvents = 'none';
-        document.body.appendChild(playerElem);
+    playerElem = document.createElement('img');
+    playerElem.id = 'player-sprite';
+    playerElem.src = '/static/images/player.png';
+    playerElem.style.position = 'fixed';
+    playerElem.style.left = playerPos.x + 'px';
+    playerElem.style.top = playerPos.y + 'px';
+    playerElem.style.width = playerSize + 'px';
+    playerElem.style.height = playerSize + 'px';
+    playerElem.style.zIndex = 10003;
+    playerElem.style.pointerEvents = 'none';
+    document.body.appendChild(playerElem);
 
-        window.addEventListener('keydown', playerKeyDown);
-        window.addEventListener('keyup', playerKeyUp);
+    window.addEventListener('keydown', playerKeyDown);
+    window.addEventListener('keyup', playerKeyUp);
 
-        playerInterval = setInterval(movePlayer, 16);
-        }
+    playerInterval = setInterval(movePlayer, 16);
 
-        function playerKeyDown(e) {
-        if (e.key in playerKeys) {
+    // Bullet logic
+    bullets = [];
+    canShoot = true;
+    window.addEventListener('keydown', bulletKeyDown);
+    if (!bulletInterval) {
+        bulletInterval = setInterval(moveBullets, 16);
+    }
+}
+
+function playerKeyDown(e) {
+    if (e.key in playerKeys) {
         playerKeys[e.key] = true;
         e.preventDefault();
-        }
-        }
+    }
+}
 
-        function playerKeyUp(e) {
-        if (e.key in playerKeys) {
+function playerKeyUp(e) {
+    if (e.key in playerKeys) {
         playerKeys[e.key] = false;
         e.preventDefault();
-        }
-        }
+    }
+}
 
-        function movePlayer() {
-        let moved = false;
-        if (playerKeys.ArrowUp) {
+function movePlayer() {
+    let moved = false;
+    if (playerKeys.ArrowUp) {
         playerPos.y -= playerSpeed;
         moved = true;
-        }
-        if (playerKeys.ArrowDown) {
+    }
+    if (playerKeys.ArrowDown) {
         playerPos.y += playerSpeed;
         moved = true;
-        }
-        if (playerKeys.ArrowLeft) {
+    }
+    if (playerKeys.ArrowLeft) {
         playerPos.x -= playerSpeed;
         moved = true;
-        }
-        if (playerKeys.ArrowRight) {
+    }
+    if (playerKeys.ArrowRight) {
         playerPos.x += playerSpeed;
         moved = true;
-        }
-        // Clamp to viewport
-        playerPos.x = Math.max(0, Math.min(window.innerWidth - playerSize, playerPos.x));
-        playerPos.y = Math.max(0, Math.min(window.innerHeight - playerSize, playerPos.y));
-        if (playerElem) {
+    }
+    // Clamp to viewport
+    playerPos.x = Math.max(0, Math.min(window.innerWidth - playerSize, playerPos.x));
+    playerPos.y = Math.max(0, Math.min(window.innerHeight - playerSize, playerPos.y));
+    if (playerElem) {
         playerElem.style.left = playerPos.x + 'px';
         playerElem.style.top = playerPos.y + 'px';
-        }
-        if (moved) {
+    }
+    if (moved) {
         checkPlayerCollision();
-        }
-        }
+    }
+}
 
-        function checkPlayerCollision() {
-        const sans = document.getElementById('bouncing-sans');
-        if (!sans || !playerElem) return;
-        const sansRect = sans.getBoundingClientRect();
-        const playerRect = playerElem.getBoundingClientRect();
-        if (
+function checkPlayerCollision() {
+    const sans = document.getElementById('bouncing-sans');
+    if (!sans || !playerElem) return;
+    const sansRect = sans.getBoundingClientRect();
+    const playerRect = playerElem.getBoundingClientRect();
+    if (
         playerRect.left < sansRect.right &&
         playerRect.right > sansRect.left &&
         playerRect.top < sansRect.bottom &&
         playerRect.bottom > sansRect.top
-        ) {
+    ) {
         // Collision detected
-        revertToDefaultTheme();
-        removePlayer();
-        stopBouncingSans();
-        if (megalovaniaAudio) {
-            megalovaniaAudio.pause();
-            megalovaniaAudio = null;
-        }
-        }
-        }
+        showDeathSequence();
+    }
+}
 
-        function removePlayer() {
-        if (playerInterval) {
+function removePlayer() {
+    if (playerInterval) {
         clearInterval(playerInterval);
         playerInterval = null;
-        }
-        window.removeEventListener('keydown', playerKeyDown);
-        window.removeEventListener('keyup', playerKeyUp);
-        if (playerElem && playerElem.parentNode) {
+    }
+    window.removeEventListener('keydown', playerKeyDown);
+    window.removeEventListener('keyup', playerKeyUp);
+    window.removeEventListener('keydown', bulletKeyDown);
+    if (playerElem && playerElem.parentNode) {
         playerElem.parentNode.removeChild(playerElem);
-        }
-        playerElem = null;
-        }
+    }
+    playerElem = null;
+    // Remove bullets
+    bullets.forEach(b => {
+        if (b.elem && b.elem.parentNode) b.elem.parentNode.removeChild(b.elem);
+    });
+    bullets = [];
+    if (bulletInterval) {
+        clearInterval(bulletInterval);
+        bulletInterval = null;
+    }
+}
 
-        function revertToDefaultTheme() {
-        let link = document.querySelector('link[rel="stylesheet"]');
-        if (link) {
+// --- BULLET LOGIC ---
+function bulletKeyDown(e) {
+    if (e.repeat) return;
+    if (e.key === 'z' || e.key === 'Z') {
+        shootBullet();
+    }
+}
+
+function shootBullet() {
+    if (!canShoot || !playerElem) return;
+    canShoot = false;
+    setTimeout(() => { canShoot = true; }, 1000);
+
+    // Bullet properties
+    const bulletSize = 4;
+    const bulletSpeed = 8;
+    const bullet = document.createElement('div');
+    bullet.style.position = 'fixed';
+    bullet.style.width = bulletSize + 'px';
+    bullet.style.height = bulletSize + 'px';
+    bullet.style.background = 'red';
+    bullet.style.borderRadius = '2px';
+    bullet.style.left = (playerPos.x + playerSize / 2 - bulletSize / 2) + 'px';
+    bullet.style.top = (playerPos.y - bulletSize) + 'px';
+    bullet.style.zIndex = 10004;
+    bullet.className = 'player-bullet';
+    document.body.appendChild(bullet);
+
+    bullets.push({
+        elem: bullet,
+        x: playerPos.x + playerSize / 2 - bulletSize / 2,
+        y: playerPos.y - bulletSize,
+        size: bulletSize,
+        speed: bulletSpeed
+    });
+}
+
+function moveBullets() {
+    const sans = document.getElementById('bouncing-sans');
+    let sansRect = null;
+    if (sans) sansRect = sans.getBoundingClientRect();
+    for (let i = bullets.length - 1; i >= 0; i--) {
+        const b = bullets[i];
+        b.y -= b.speed;
+        if (b.elem) {
+            b.elem.style.top = b.y + 'px';
+        }
+        // Remove if out of screen
+        if (b.y + b.size < 0) {
+            if (b.elem && b.elem.parentNode) b.elem.parentNode.removeChild(b.elem);
+            bullets.splice(i, 1);
+            continue;
+        }
+        // Check collision with sans
+        if (sans && sansRect) {
+            const bx = b.x, by = b.y, bs = b.size;
+            if (
+                bx < sansRect.right &&
+                bx + bs > sansRect.left &&
+                by < sansRect.bottom &&
+                by + bs > sansRect.top
+            ) {
+                // Hit!
+                if (b.elem && b.elem.parentNode) b.elem.parentNode.removeChild(b.elem);
+                bullets.splice(i, 1);
+                incrementSansHit();
+            }
+        }
+    }
+}
+
+function incrementSansHit() {
+    sansHitCount = (sansHitCount || 0) + 1;
+    // Optional: flash sans or show hit effect
+    if (sansHitCount >= 10) {
+        winSequence();
+    }
+}
+
+function winSequence() {
+    // Remove everything
+    if (megalovaniaAudio) {
+        megalovaniaAudio.pause();
+        megalovaniaAudio = null;
+    }
+    stopBouncingSans();
+    removePlayer();
+    // Remove all overlays
+    const overlays = ['badtime-overlay', 'ut-death-black-overlay', 'ut-death-video'];
+    overlays.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+    // Redirect to rickroll
+    window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1';
+}
+
+// New function for death sequence
+function showDeathSequence() {
+    // Pause megalovania
+    if (megalovaniaAudio) {
+        megalovaniaAudio.pause();
+        megalovaniaAudio = null;
+    }
+    // Stop bouncing sans
+    stopBouncingSans();
+    // Remove player
+    removePlayer();
+
+    // Create black overlay
+    const blackOverlay = document.createElement('div');
+    blackOverlay.style.position = 'fixed';
+    blackOverlay.style.top = 0;
+    blackOverlay.style.left = 0;
+    blackOverlay.style.width = '100vw';
+    blackOverlay.style.height = '100vh';
+    blackOverlay.style.background = '#000';
+    blackOverlay.style.zIndex = 20000;
+    blackOverlay.id = 'ut-death-black-overlay';
+    document.body.appendChild(blackOverlay);
+
+    // Create video element
+    const video = document.createElement('video');
+    video.src = '/static/videos/ut_death.mp4';
+    video.style.position = 'fixed';
+    video.style.top = '50%';
+    video.style.left = '50%';
+    video.style.transform = 'translate(-50%, -50%)';
+    video.style.zIndex = 20001;
+    video.style.maxWidth = '100vw';
+    video.style.maxHeight = '100vh';
+    video.autoplay = true;
+    video.playsInline = true;
+    video.id = 'ut-death-video';
+    document.body.appendChild(video);
+
+    // Remove overlay and video after video ends or after 20 seconds fallback
+    let cleanedUp = false;
+    function cleanupDeath() {
+        if (cleanedUp) return;
+        cleanedUp = true;
+        if (video && video.parentNode) video.parentNode.removeChild(video);
+        if (blackOverlay && blackOverlay.parentNode) blackOverlay.parentNode.removeChild(blackOverlay);
+        revertToDefaultTheme();
+    }
+
+    video.onended = cleanupDeath;
+    setTimeout(cleanupDeath, 20000);
+}
+
+function revertToDefaultTheme() {
+    let link = document.querySelector('link[rel="stylesheet"]');
+    if (link) {
         link.href = '/static/css/halo.css';
-        } else {
+    } else {
         link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = '/static/css/halo.css';
         document.head.appendChild(link);
-        }
-        }
+    }
+}
 
 
 listenForBADTIME();
