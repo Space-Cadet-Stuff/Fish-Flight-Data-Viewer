@@ -1,0 +1,426 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap'); /* Comic Sans alternative */
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.95; }
+    60% { opacity: 1; }
+    70% { opacity: 0.98; }
+}
+
+@keyframes slideFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 5px rgba(0,0,0,0.2);}
+    50% { box-shadow: 0 0 20px rgba(0,0,0,0.4);}
+    100% { box-shadow: 0 0 5px rgba(0,0,0,0.2);}
+}
+
+@keyframes h1ColorSwap {
+    0%, 100% { color: #00ffff; } /* cyan */
+    50% { color: #ffff00; }      /* yellow */
+}
+
+body {
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    background-image: none;
+}
+
+header {
+    background-color: #111;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 4px solid #fff;
+    display: flex;
+    animation: slideFadeIn 0.6s ease-out forwards;
+    justify-content: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    animation: h1ColorSwap 0.3s infinite steps(2);
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 #000, 0 0 10px #fff;
+    align-self: center;
+}
+
+.header-buttons {
+    margin-top: 10px;
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+    animation: slideFadeIn 0.8s ease-out forwards;
+}
+
+.button {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+    display: block;
+    text-align: center;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.button:hover {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    animation: pulse 1s infinite;
+}
+
+main {
+    padding: 20px;
+}
+
+.content-box,
+.content-box-visualiser {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 0;
+    box-shadow: 0 0 0 4px #fff, 0 0 15px #000;
+    max-width: 800px;
+    height: 550px;
+    margin: 20px auto;
+    animation: slideFadeIn 0.9s ease-out forwards, flicker 3s infinite;
+    overflow: auto;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.content-box-visualiser {
+    max-width: 1200px;
+}
+
+.content-box p,
+.content-box-visualiser p {
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.content-box ul,
+.content-box-visualiser ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.content-box ul li,
+.content-box-visualiser ul li {
+    background-color: #222;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 0;
+    color: #fff;
+    border: 1px solid #fff;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+}
+
+.content-box img,
+.content-box-visualiser img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+    border: 2px solid #fff;
+    border-radius: 0;
+}
+
+a {
+    color: #fff;
+    text-decoration: underline;
+    transition: color 0.3s;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+}
+
+a:hover {
+    color: #000;
+    background: #fff;
+}
+
+input {
+    background-color: #111;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px;
+    border-radius: 0;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+}
+
+input:focus {
+    border-color: #fff;
+    box-shadow: 0 0 8px #fff;
+    outline: none;
+}
+
+.dropdown {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+    width: fit-content;
+    animation: slideFadeIn 1s ease-out forwards;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 10vw;
+    background-color: #111;
+    z-index: 1;
+    padding: 10px;
+    box-shadow: 0 4px 6px #000;
+    border-radius: 0;
+    margin-top: 5px;
+    box-sizing: border-box;
+    animation: slideFadeIn 1s ease-out forwards;
+    border: 2px solid #fff;
+}
+
+.dropdown-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dropdown-content button {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px;
+    border-radius: 0;
+    font-size: 1rem;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    color: #000;
+    background-color: #fff;
+    border-color: #000;
+    animation: pulse 1s infinite;
+}
+
+.show {
+    display: block;
+}
+
+.flash-container {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.flash-message {
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    border-radius: 0;
+    font-weight: bold;
+    color: #fff;
+    border: 2px solid #fff;
+    background: #000;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+}
+
+.success, .error, .warning, .info {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    box-shadow: none;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.content-box form,
+.content-box-visualiser form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.content-box form label,
+.content-box-visualiser form label {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.content-box form input[type="text"],
+.content-box form input[type="date"],
+.content-box form input[type="file"],
+.content-box-visualiser form input[type="text"],
+.content-box-visualiser form input[type="date"],
+.content-box-visualiser form input[type="file"] {
+    background-color: #111;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px;
+    border-radius: 0;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.content-box form input[type="text"]:focus,
+.content-box form input[type="date"]:focus,
+.content-box form input[type="file"]:focus,
+.content-box-visualiser form input[type="text"]:focus,
+.content-box-visualiser form input[type="date"]:focus,
+.content-box-visualiser form input[type="file"]:focus {
+    border-color: #fff;
+    box-shadow: 0 0 8px #fff;
+    outline: none;
+}
+
+.content-box form button,
+.content-box-visualiser form button {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+}
+
+.content-box form button:hover,
+.content-box-visualiser form button:hover {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    animation: pulse 1s infinite;
+}
+
+.content-box form div,
+.content-box-visualiser form div {
+    display: flex;
+    gap: 20px;
+}
+
+.content-box form div > div,
+.content-box-visualiser form div > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-actions {
+    padding: 0;
+    margin: 20px 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.file-actions li {
+    background-color: #111;
+    border: 2px solid #fff;
+    border-radius: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideFadeIn 0.6s ease-out forwards;
+    box-shadow: 0 0 0 2px #fff;
+    color: #fff;
+}
+
+.file-actions li:hover {
+    box-shadow: 0 0 0 4px #fff;
+}
+
+.file-actions .button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.file-actions form {
+    display: inline;
+}
+
+.file-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.file-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: #fff;
+    cursor: pointer;
+    border: 2px solid #000;
+    border-radius: 0;
+    color: #000;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
+}
+
+a.file-button {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.file-button:hover {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    animation: pulse 1s infinite;
+}
+
+.title-box {
+    display: flex;
+    flex-direction: row;
+}
+y
+.visualiser-selector {
+    max-width: 110%;
+}
+
+.selector {
+    width: 4%;
+}

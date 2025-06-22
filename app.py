@@ -196,7 +196,6 @@ def visualiser():
             "headers": headers
         })
 
-
     return render_template("visualiser.html", csv_data=csv_data)
 
 @app.route('/account_settings', methods=['GET', 'POST'])# Define the route for account settings

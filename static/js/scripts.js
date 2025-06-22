@@ -13,14 +13,14 @@ window.onclick = function(e) {
 }
 
 function listenForKonamiCode() {
-    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up, Up, Down, Down, Left, Right, Left, Right, B, A
+    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
     let konamiCodePosition = 0;
 
     document.addEventListener('keydown', function (event) {
         if (event.keyCode === konamiCode[konamiCodePosition]) {
             konamiCodePosition++;
             if (konamiCodePosition === konamiCode.length) {
-                // Konami code successfully entered
+
                 activateKonamiCode();
                 konamiCodePosition = 0;
             }
@@ -42,4 +42,394 @@ function dismissAlert(alertBox) {
     }, 500);
 }
 
+function listenForIDKFA() {
+    const idkfaCode = [73, 68, 75, 70, 65];
+    let idkfaPosition = 0;
+    let idkfaActivated = false;
+
+    document.addEventListener('keydown', function(event) {
+        if (idkfaActivated) return;
+        if (event.keyCode === idkfaCode[idkfaPosition]) {
+            idkfaPosition++;
+            if (idkfaPosition === idkfaCode.length) {
+                idkfaActivated = true;
+                activateIDKFA();
+                idkfaPosition = 0;
+            }
+        } else {
+            idkfaPosition = 0;
+        }
+    });
+}
+
+function activateIDKFA() {
+
+    const audio = new Audio('/static/sounds/idkfa.mp3');
+    audio.play();
+
+    setTimeout(() => {
+
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = 0;
+        overlay.style.left = 0;
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.background = 'rgba(255,0,0,0.3)';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.zIndex = 9998;
+        overlay.id = 'idkfa-red-overlay';
+        document.body.appendChild(overlay);
+
+        const img = document.createElement('img');
+        img.src = '/static/images/idkfa.png';
+        img.style.position = 'fixed';
+        img.style.top = '5px';
+        img.style.left = '5px';
+        img.style.padding = '5px';
+        img.style.zIndex = 9999;
+        img.style.maxWidth = '200px';
+        img.style.maxHeight = '200px';
+        img.id = 'idkfa-img';
+        document.body.appendChild(img);
+
+        setTimeout(() => {
+            if (img.parentNode) img.parentNode.removeChild(img);
+        }, 5000);
+
+        setTimeout(() => {
+            if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, 25000);
+
+    }, 0);
+}
+
+function listenForBADTIME() {
+    const badtimeCode = [66, 65, 68, 84, 73, 77, 69]; // B A D T I M E
+    let badtimePosition = 0;
+    let badtimeActivated = false;
+
+    document.addEventListener('keydown', function(event) {
+        if (badtimeActivated) return;
+        if (event.keyCode === badtimeCode[badtimePosition]) {
+            badtimePosition++;
+            if (badtimePosition === badtimeCode.length) {
+                badtimeActivated = true;
+                showBadTimeBox();
+                badtimePosition = 0;
+            }
+        } else {
+            badtimePosition = 0;
+        }
+    });
+}
+
+function showBadTimeBox() {
+    // Overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = 0;
+    overlay.style.left = 0;
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.background = 'rgba(0,0,0,0.85)';
+    overlay.style.zIndex = 10000;
+    overlay.id = 'badtime-overlay';
+
+    // Box
+    const box = document.createElement('div');
+    box.style.position = 'fixed';
+    box.style.top = '50%';
+    box.style.left = '50%';
+    box.style.transform = 'translate(-50%, -50%)';
+    box.style.background = '#000';
+    box.style.color = '#fff';
+    box.style.padding = '32px 48px';
+    box.style.border = '4px solid #fff';
+    box.style.borderRadius = '0';
+    box.style.boxShadow = '0 0 0 8px #fff, 0 0 32px #000';
+    box.style.textAlign = 'center';
+    box.style.zIndex = 10001;
+    box.style.fontFamily = '"Comic Sans MS", "Comic Sans", cursive, sans-serif';
+    box.style.letterSpacing = '1px';
+    box.style.fontSize = '1.3rem';
+    box.style.maxWidth = '90vw';
+
+    // Undertale-style border (simulate with extra div)
+    const border = document.createElement('div');
+    border.style.position = 'absolute';
+    border.style.top = '-8px';
+    border.style.left = '-8px';
+    border.style.right = '-8px';
+    border.style.bottom = '-8px';
+    border.style.border = '4px solid #fff';
+    border.style.pointerEvents = 'none';
+    box.appendChild(border);
+
+    // Text
+    const text = document.createElement('div');
+    text.textContent = 'Do you want to have a bad time?';
+    text.style.marginBottom = '28px';
+    text.style.textShadow = '2px 2px 0 #000, 0 0 8px #fff';
+    box.appendChild(text);
+
+    // Buttons container
+    const btnContainer = document.createElement('div');
+    btnContainer.style.display = 'flex';
+    btnContainer.style.justifyContent = 'center';
+    btnContainer.style.gap = '32px';
+
+    // Yes Button
+    const yesBtn = document.createElement('button');
+    yesBtn.textContent = '► YES';
+    yesBtn.style.padding = '10px 32px';
+    yesBtn.style.background = '#000';
+    yesBtn.style.color = '#fff';
+    yesBtn.style.border = '2px solid #fff';
+    yesBtn.style.borderRadius = '0';
+    yesBtn.style.fontFamily = '"Comic Sans MS", "Comic Sans", cursive, sans-serif';
+    yesBtn.style.fontSize = '1.1rem';
+    yesBtn.style.cursor = 'pointer';
+    yesBtn.style.textShadow = '2px 2px 0 #000, 0 0 8px #fff';
+    yesBtn.onmouseover = () => { yesBtn.style.background = '#222'; };
+    yesBtn.onmouseout = () => { yesBtn.style.background = '#000'; };
+
+    // No Button
+    const noBtn = document.createElement('button');
+    noBtn.textContent = 'NO';
+    noBtn.style.padding = '10px 32px';
+    noBtn.style.background = '#000';
+    noBtn.style.color = '#fff';
+    noBtn.style.border = '2px solid #fff';
+    noBtn.style.borderRadius = '0';
+    noBtn.style.fontFamily = '"Comic Sans MS", "Comic Sans", cursive, sans-serif';
+    noBtn.style.fontSize = '1.1rem';
+    noBtn.style.cursor = 'pointer';
+    noBtn.style.textShadow = '2px 2px 0 #000, 0 0 8px #fff';
+    noBtn.onmouseover = () => { noBtn.style.background = '#222'; };
+    noBtn.onmouseout = () => { noBtn.style.background = '#000'; };
+
+    btnContainer.appendChild(yesBtn);
+    btnContainer.appendChild(noBtn);
+    box.appendChild(btnContainer);
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    function closeBox() {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    }
+
+    noBtn.onclick = function() {
+        closeBox();
+    };
+
+    yesBtn.onclick = function() {
+        closeBox();
+        switchToSansTheme();
+        playMegalovania();
+        startBouncingSans();
+        spawnControllablePlayer();
+        };
+        }
+
+        function switchToSansTheme() {
+        let link = document.querySelector('link[rel="stylesheet"]');
+        if (link) {
+        link.href = '/static/css/sans.css';
+        } else {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/static/css/sans.css';
+        document.head.appendChild(link);
+        }
+        }
+
+        let megalovaniaAudio = null;
+        function playMegalovania() {
+        if (megalovaniaAudio) {
+        megalovaniaAudio.pause();
+        megalovaniaAudio = null;
+        }
+        megalovaniaAudio = new Audio('/static/sounds/megalovania.mp3');
+        megalovaniaAudio.loop = true;
+        megalovaniaAudio.play();
+        }
+
+        // Bouncing Sans GIF
+        let sansBounceInterval = null;
+        function startBouncingSans() {
+        if (document.getElementById('bouncing-sans')) return; // Only one instance
+
+        const img = document.createElement('img');
+        img.src = '/static/images/sans.gif';
+        img.id = 'bouncing-sans';
+        img.style.position = 'fixed';
+        img.style.left = '50px';
+        img.style.top = '50px';
+        img.style.width = (100) + 'px';
+        img.style.height = (125) + 'px';
+        img.style.zIndex = 10002;
+        img.style.pointerEvents = 'none';
+        document.body.appendChild(img);
+
+        let x = 50, y = 50;
+        let dx = 3 + Math.random() * 2, dy = 3 + Math.random() * 2;
+        let w = 100 * 0.75, h = 100 * 0.75;
+
+        function move() {
+        const ww = window.innerWidth;
+        const wh = window.innerHeight;
+        x += dx;
+        y += dy;
+        if (x <= 0 || x + w >= ww) dx = -dx;
+        if (y <= 0 || y + h >= wh) dy = -dy;
+        x = Math.max(0, Math.min(x, ww - w));
+        y = Math.max(0, Math.min(y, wh - h));
+        img.style.left = x + 'px';
+        img.style.top = y + 'px';
+        }
+
+        sansBounceInterval = setInterval(move, 16);
+
+        // Remove on page unload or if needed
+        window.addEventListener('beforeunload', stopBouncingSans);
+        }
+
+        function stopBouncingSans() {
+        if (sansBounceInterval) {
+        clearInterval(sansBounceInterval);
+        sansBounceInterval = null;
+        }
+        const img = document.getElementById('bouncing-sans');
+        if (img && img.parentNode) img.parentNode.removeChild(img);
+        }
+
+        // --- PLAYER CONTROL ---
+        let playerInterval = null;
+        let playerPos = { x: 0, y: 0 };
+        let playerSpeed = 5;
+        let playerSize = 32 * 0.75;
+        let playerElem = null;
+        let playerKeys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+
+        function spawnControllablePlayer() {
+        if (document.getElementById('player-sprite')) return;
+
+        // Center the player
+        playerPos.x = Math.floor((window.innerWidth - playerSize) / 2);
+        playerPos.y = Math.floor((window.innerHeight - playerSize) / 2);
+
+        playerElem = document.createElement('img');
+        playerElem.id = 'player-sprite';
+        playerElem.src = '/static/images/player.png';
+        playerElem.style.position = 'fixed';
+        playerElem.style.left = playerPos.x + 'px';
+        playerElem.style.top = playerPos.y + 'px';
+        playerElem.style.width = playerSize + 'px';
+        playerElem.style.height = playerSize + 'px';
+        playerElem.style.zIndex = 10003;
+        playerElem.style.pointerEvents = 'none';
+        document.body.appendChild(playerElem);
+
+        window.addEventListener('keydown', playerKeyDown);
+        window.addEventListener('keyup', playerKeyUp);
+
+        playerInterval = setInterval(movePlayer, 16);
+        }
+
+        function playerKeyDown(e) {
+        if (e.key in playerKeys) {
+        playerKeys[e.key] = true;
+        e.preventDefault();
+        }
+        }
+
+        function playerKeyUp(e) {
+        if (e.key in playerKeys) {
+        playerKeys[e.key] = false;
+        e.preventDefault();
+        }
+        }
+
+        function movePlayer() {
+        let moved = false;
+        if (playerKeys.ArrowUp) {
+        playerPos.y -= playerSpeed;
+        moved = true;
+        }
+        if (playerKeys.ArrowDown) {
+        playerPos.y += playerSpeed;
+        moved = true;
+        }
+        if (playerKeys.ArrowLeft) {
+        playerPos.x -= playerSpeed;
+        moved = true;
+        }
+        if (playerKeys.ArrowRight) {
+        playerPos.x += playerSpeed;
+        moved = true;
+        }
+        // Clamp to viewport
+        playerPos.x = Math.max(0, Math.min(window.innerWidth - playerSize, playerPos.x));
+        playerPos.y = Math.max(0, Math.min(window.innerHeight - playerSize, playerPos.y));
+        if (playerElem) {
+        playerElem.style.left = playerPos.x + 'px';
+        playerElem.style.top = playerPos.y + 'px';
+        }
+        if (moved) {
+        checkPlayerCollision();
+        }
+        }
+
+        function checkPlayerCollision() {
+        const sans = document.getElementById('bouncing-sans');
+        if (!sans || !playerElem) return;
+        const sansRect = sans.getBoundingClientRect();
+        const playerRect = playerElem.getBoundingClientRect();
+        if (
+        playerRect.left < sansRect.right &&
+        playerRect.right > sansRect.left &&
+        playerRect.top < sansRect.bottom &&
+        playerRect.bottom > sansRect.top
+        ) {
+        // Collision detected
+        revertToDefaultTheme();
+        removePlayer();
+        stopBouncingSans();
+        if (megalovaniaAudio) {
+            megalovaniaAudio.pause();
+            megalovaniaAudio = null;
+        }
+        }
+        }
+
+        function removePlayer() {
+        if (playerInterval) {
+        clearInterval(playerInterval);
+        playerInterval = null;
+        }
+        window.removeEventListener('keydown', playerKeyDown);
+        window.removeEventListener('keyup', playerKeyUp);
+        if (playerElem && playerElem.parentNode) {
+        playerElem.parentNode.removeChild(playerElem);
+        }
+        playerElem = null;
+        }
+
+        function revertToDefaultTheme() {
+        let link = document.querySelector('link[rel="stylesheet"]');
+        if (link) {
+        link.href = '/static/css/halo.css';
+        } else {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/static/css/halo.css';
+        document.head.appendChild(link);
+        }
+        }
+
+
+listenForBADTIME();
 listenForKonamiCode();
+listenForIDKFA();
