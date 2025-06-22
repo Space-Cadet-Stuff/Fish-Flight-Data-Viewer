@@ -20,7 +20,6 @@ function listenForKonamiCode() {
         if (event.keyCode === konamiCode[konamiCodePosition]) {
             konamiCodePosition++;
             if (konamiCodePosition === konamiCode.length) {
-
                 activateKonamiCode();
                 konamiCodePosition = 0;
             }
@@ -36,7 +35,6 @@ function activateKonamiCode() {
 
 function dismissAlert(alertBox) {
     alertBox.classList.add('fade-out');
-
     setTimeout(function () {
         alertBox.style.display = 'none';
     }, 500);
@@ -63,12 +61,9 @@ function listenForIDKFA() {
 }
 
 function activateIDKFA() {
-
     const audio = new Audio('/static/sounds/idkfa.mp3');
     audio.play();
-
     setTimeout(() => {
-
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
         overlay.style.top = 0;
@@ -100,12 +95,11 @@ function activateIDKFA() {
         setTimeout(() => {
             if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
         }, 25000);
-
     }, 0);
 }
 
 function listenForBADTIME() {
-    const badtimeCode = [66, 65, 68, 84, 73, 77, 69]; // B A D T I M E
+    const badtimeCode = [66, 65, 68, 84, 73, 77, 69];
     let badtimePosition = 0;
     let badtimeActivated = false;
 
@@ -125,7 +119,6 @@ function listenForBADTIME() {
 }
 
 function showBadTimeBox() {
-    // Overlay
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
     overlay.style.top = 0;
@@ -136,7 +129,6 @@ function showBadTimeBox() {
     overlay.style.zIndex = 10000;
     overlay.id = 'badtime-overlay';
 
-    // Box
     const box = document.createElement('div');
     box.style.position = 'fixed';
     box.style.top = '50%';
@@ -155,7 +147,6 @@ function showBadTimeBox() {
     box.style.fontSize = '1.3rem';
     box.style.maxWidth = '90vw';
 
-    // Undertale-style border (simulate with extra div)
     const border = document.createElement('div');
     border.style.position = 'absolute';
     border.style.top = '-8px';
@@ -166,20 +157,17 @@ function showBadTimeBox() {
     border.style.pointerEvents = 'none';
     box.appendChild(border);
 
-    // Text
     const text = document.createElement('div');
     text.textContent = 'Do you want to have a bad time?';
     text.style.marginBottom = '28px';
     text.style.textShadow = '2px 2px 0 #000, 0 0 8px #fff';
     box.appendChild(text);
 
-    // Buttons container
     const btnContainer = document.createElement('div');
     btnContainer.style.display = 'flex';
     btnContainer.style.justifyContent = 'center';
     btnContainer.style.gap = '32px';
 
-    // Yes Button
     const yesBtn = document.createElement('button');
     yesBtn.textContent = '► YES';
     yesBtn.style.padding = '10px 32px';
@@ -194,7 +182,6 @@ function showBadTimeBox() {
     yesBtn.onmouseover = () => { yesBtn.style.background = '#222'; };
     yesBtn.onmouseout = () => { yesBtn.style.background = '#000'; };
 
-    // No Button
     const noBtn = document.createElement('button');
     noBtn.textContent = 'NO';
     noBtn.style.padding = '10px 32px';
@@ -256,11 +243,10 @@ function playMegalovania() {
     megalovaniaAudio.play();
 }
 
-// Bouncing Sans GIF
 let sansBounceInterval = null;
 let sansHitCount = 0;
 function startBouncingSans() {
-    if (document.getElementById('bouncing-sans')) return; // Only one instance
+    if (document.getElementById('bouncing-sans')) return;
 
     const img = document.createElement('img');
     img.src = '/static/images/sans.gif';
@@ -292,8 +278,6 @@ function startBouncingSans() {
     }
 
     sansBounceInterval = setInterval(move, 16);
-
-    // Remove on page unload or if needed
     window.addEventListener('beforeunload', stopBouncingSans);
 }
 
@@ -306,7 +290,6 @@ function stopBouncingSans() {
     if (img && img.parentNode) img.parentNode.removeChild(img);
 }
 
-// --- PLAYER CONTROL ---
 let playerInterval = null;
 let playerPos = { x: 0, y: 0 };
 let playerSpeed = 5;
@@ -319,8 +302,6 @@ let bulletInterval = null;
 
 function spawnControllablePlayer() {
     if (document.getElementById('player-sprite')) return;
-
-    // Center the player
     playerPos.x = Math.floor((window.innerWidth - playerSize) / 2);
     playerPos.y = Math.floor((window.innerHeight - playerSize) / 2);
 
@@ -340,8 +321,6 @@ function spawnControllablePlayer() {
     window.addEventListener('keyup', playerKeyUp);
 
     playerInterval = setInterval(movePlayer, 16);
-
-    // Bullet logic
     bullets = [];
     canShoot = true;
     window.addEventListener('keydown', bulletKeyDown);
@@ -382,7 +361,6 @@ function movePlayer() {
         playerPos.x += playerSpeed;
         moved = true;
     }
-    // Clamp to viewport
     playerPos.x = Math.max(0, Math.min(window.innerWidth - playerSize, playerPos.x));
     playerPos.y = Math.max(0, Math.min(window.innerHeight - playerSize, playerPos.y));
     if (playerElem) {
@@ -405,7 +383,6 @@ function checkPlayerCollision() {
         playerRect.top < sansRect.bottom &&
         playerRect.bottom > sansRect.top
     ) {
-        // Collision detected
         showDeathSequence();
     }
 }
@@ -422,7 +399,6 @@ function removePlayer() {
         playerElem.parentNode.removeChild(playerElem);
     }
     playerElem = null;
-    // Remove bullets
     bullets.forEach(b => {
         if (b.elem && b.elem.parentNode) b.elem.parentNode.removeChild(b.elem);
     });
@@ -433,7 +409,6 @@ function removePlayer() {
     }
 }
 
-// --- BULLET LOGIC ---
 function bulletKeyDown(e) {
     if (e.repeat) return;
     if (e.key === 'z' || e.key === 'Z') {
@@ -445,8 +420,6 @@ function shootBullet() {
     if (!canShoot || !playerElem) return;
     canShoot = false;
     setTimeout(() => { canShoot = true; }, 1000);
-
-    // Bullet properties
     const bulletSize = 4;
     const bulletSpeed = 8;
     const bullet = document.createElement('div');
@@ -480,13 +453,11 @@ function moveBullets() {
         if (b.elem) {
             b.elem.style.top = b.y + 'px';
         }
-        // Remove if out of screen
         if (b.y + b.size < 0) {
             if (b.elem && b.elem.parentNode) b.elem.parentNode.removeChild(b.elem);
             bullets.splice(i, 1);
             continue;
         }
-        // Check collision with sans
         if (sans && sansRect) {
             const bx = b.x, by = b.y, bs = b.size;
             if (
@@ -495,7 +466,6 @@ function moveBullets() {
                 by < sansRect.bottom &&
                 by + bs > sansRect.top
             ) {
-                // Hit!
                 if (b.elem && b.elem.parentNode) b.elem.parentNode.removeChild(b.elem);
                 bullets.splice(i, 1);
                 incrementSansHit();
@@ -506,43 +476,33 @@ function moveBullets() {
 
 function incrementSansHit() {
     sansHitCount = (sansHitCount || 0) + 1;
-    // Optional: flash sans or show hit effect
     if (sansHitCount >= 10) {
         winSequence();
     }
 }
 
 function winSequence() {
-    // Remove everything
     if (megalovaniaAudio) {
         megalovaniaAudio.pause();
         megalovaniaAudio = null;
     }
     stopBouncingSans();
     removePlayer();
-    // Remove all overlays
     const overlays = ['badtime-overlay', 'ut-death-black-overlay', 'ut-death-video'];
     overlays.forEach(id => {
         const el = document.getElementById(id);
         if (el && el.parentNode) el.parentNode.removeChild(el);
     });
-    // Redirect to rickroll
     window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1';
 }
 
-// New function for death sequence
 function showDeathSequence() {
-    // Pause megalovania
     if (megalovaniaAudio) {
         megalovaniaAudio.pause();
         megalovaniaAudio = null;
     }
-    // Stop bouncing sans
     stopBouncingSans();
-    // Remove player
     removePlayer();
-
-    // Create black overlay
     const blackOverlay = document.createElement('div');
     blackOverlay.style.position = 'fixed';
     blackOverlay.style.top = 0;
@@ -554,7 +514,6 @@ function showDeathSequence() {
     blackOverlay.id = 'ut-death-black-overlay';
     document.body.appendChild(blackOverlay);
 
-    // Create video element
     const video = document.createElement('video');
     video.src = '/static/videos/ut_death.mp4';
     video.style.position = 'fixed';
@@ -569,7 +528,6 @@ function showDeathSequence() {
     video.id = 'ut-death-video';
     document.body.appendChild(video);
 
-    // Remove overlay and video after video ends or after 20 seconds fallback
     let cleanedUp = false;
     function cleanupDeath() {
         if (cleanedUp) return;
@@ -594,7 +552,6 @@ function revertToDefaultTheme() {
         document.head.appendChild(link);
     }
 }
-
 
 listenForBADTIME();
 listenForKonamiCode();
