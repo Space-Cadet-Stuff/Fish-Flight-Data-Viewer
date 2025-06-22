@@ -552,7 +552,7 @@ function revertToDefaultTheme() {
         document.head.appendChild(link);
     }
 }
-
+x
 listenForBADTIME();
 listenForKonamiCode();
 listenForIDKFA();
