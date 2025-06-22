@@ -18,9 +18,13 @@ An interactive data viewer for graphing rocket data
 - Easter eggs
 ## Screenshots
 
-![App Screenshot](/static/images/screenshot-1.png)
+![App Screenshot 1](/static/images/screenshot-1.png)
 
-![App Screenshot](/static/images/screenshot-2.png)
+![App Screenshot 2](/static/images/screenshot-2.png)
+
+![App Screenshot 3](/static/images/screenshot-3.png)
+
+![App Screenshot 4](/static/images/screenshot-4.png)
 
 
 ## Requirements
