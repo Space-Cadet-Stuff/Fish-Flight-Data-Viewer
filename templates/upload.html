@@ -25,6 +25,17 @@
     </header>
     <main>
         <div class="content-box">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                <div class="flash-message {{ category }} fade-in" onclick="dismissAlert(this)">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
             <h2>Upload Data</h2>
             <p>Choose your data to upload to fishflight</p>
             <form action="" method="POST" enctype="multipart/form-data">
@@ -49,17 +60,6 @@
             </form>
         </div>
     </main>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="flash-container">
-        {% for category, message in messages %}
-        <div class="flash-message {{ category }} fade-in" onclick="dismissAlert(this)">
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    {% endwith %}
     <div class="dropdown-content" id="themeMenu" style="position: absolute; top: 70px; right: 20px;">
         <form method="POST" action="{{ url_for('set_theme') }}">
             <button type="submit" name="theme" value="halo.css" class="button">UNSC</button>
