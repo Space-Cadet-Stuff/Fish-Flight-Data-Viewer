@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os# last time someone imported this they bricked their computer
 import csv
+import io# Used to read the CSV file content
 
 
 app = Flask(__name__)
@@ -94,43 +95,56 @@ def set_theme():
     flask_session['theme'] = selected_theme# Store the selected theme in the session
     return redirect(request.referrer or url_for('index'))
 
-@app.route('/upload', methods=["GET", "POST"])# Define the route for uploading files
+@app.route('/upload', methods=["GET", "POST"])  # Define the route for uploading files
 def upload():
-    if "user_id" not in flask_session:# Check if the user is logged in
+    if "user_id" not in flask_session:  # Check if the user is logged in
         flash("You need to login to upload files.", "warning")
         return redirect(url_for("login"))
 
-    if request.method == "POST":# Handle file upload
+    if request.method == "POST":  # Handle file upload
         title = request.form.get("title")
         launch_date = request.form.get("launchDate")
         engine_class = request.form.get("engineClass")
         file = request.files.get("csvFile")
 
-        if not file or not file.filename.endswith('.csv'):# Check if the file is a valid CSV
+        if not file or not file.filename.endswith('.csv'):  # Check if the file is a valid CSV
             flash("Please upload a valid CSV file.", "error")
             return redirect(request.url)
 
-        filename = secure_filename(file.filename)# Secure the filename using werkzeug utils
+        filename = secure_filename(file.filename)  # Secure the filename using werkzeug utils
 
-        existing_file = db_session.query(CSVFile).filter_by(filename=filename, user_id=flask_session["user_id"]).first()# Check if the user has already uploaded a file with the same name
-        if existing_file:# If a file with this same name exists, flash an error message
+        # Attempt to read the CSV content before saving
+        try:
+            stream = io.StringIO(file.stream.read().decode("utf-8"))
+            csv_reader = csv.reader(stream)
+            test_row = next(csv_reader)  # Try to read at least one row
+            if not test_row:
+                raise ValueError("CSV appears to be empty or malformed.")
+            stream.seek(0)  # Reset stream for saving later
+            file.stream.seek(0)
+        except Exception as e:
+            flash("Uploaded CSV file is corrupted or unreadable. Error: " + str(e), "error")
+            return redirect(request.url)
+
+        existing_file = db_session.query(CSVFile).filter_by(filename=filename, user_id=flask_session["user_id"]).first()
+        if existing_file:
             flash("You have already uploaded a document with this same filename", "error")
             return redirect(request.url)
 
-        user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(flask_session["user_id"]))# Access user-specific folder
-        os.makedirs(user_folder, exist_ok=True)# Create the folder if it doesn't exist
-        filepath = os.path.join(user_folder, filename)# Save the file to the user-specific folder
-        file.save(filepath)# Save the file
+        user_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(flask_session["user_id"]))
+        os.makedirs(user_folder, exist_ok=True)
+        filepath = os.path.join(user_folder, filename)
+        file.save(filepath)  # Save the file
 
-        csv_file = CSVFile(# Create a new CSVFile instance, and store the form information as metadata in the database
+        csv_file = CSVFile(
             filename=filename,
             title=title,
             launch_date=launch_date,
             engine_class=engine_class,
             user_id=flask_session["user_id"]
         )
-        db_session.add(csv_file)# Add the new CSVFile instance to the session
-        db_session.commit()# Commit the session to save the file information to the database
+        db_session.add(csv_file)
+        db_session.commit()
 
         flash("File uploaded successfully!", "success")
         return redirect(url_for("dashboard"))
