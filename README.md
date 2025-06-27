@@ -4,7 +4,7 @@
 
 # Fish Flight
 
-An interactive data viewer for graphing rocket data
+An interactive data viewer for graphing flight data from model/bottle rocket launches.
 
 
 ## Features
@@ -14,19 +14,6 @@ An interactive data viewer for graphing rocket data
 - Graph data from multiple files at the same time
 - Download or Delete .csv files from the app whenever you need
 - Delete account or Change information whenever you need
-- Multiple themes
-- Easter eggs
-## Screenshots
-
-![App Screenshot 1](/static/images/screenshot-1.png)
-
-![App Screenshot 2](/static/images/screenshot-2.png)
-
-![App Screenshot 3](/static/images/screenshot-3.png)
-
-![App Screenshot 4](/static/images/screenshot-4.png)
-
-
 ## Requirements
  - For Python (requires [Python](https://www.python.org/downloads) to be installed)
     - Flask
@@ -54,14 +41,16 @@ To deploy this project run (In project directory)
 ```
 
 
-## Documentation
-
-[Documentation (Add Later)](https://linktodocumentation)
-
-
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
+## Screenshots
+
+![App Screenshot](/static/images/screenshot-1)
+
+![App Screenshot](/static/images/screenshot-2)
 
 
 ## Credits
@@ -75,3 +64,13 @@ To deploy this project run (In project directory)
  - [settings.png](https://www.flaticon.com/authors/dave-gandy)
  - [download.png](https://www.flaticon.com/authors/th-studio)
  - [delete.png](https://www.flaticon.com/authors/freepik)
+## About Me
+I'm a rocket + pop culture nerd who likes computers + all things related, this is just stuff I do for my assessments, as well as a couple of things I do for fun!
+
+
+## Documentation
+
+[Documentation Link](https://1drv.ms/w/c/18b5337938ae44ef/ETsvk3iPxHhKg4QmYSDaOksBl2ZCQ6C4V1Y0qBMjHejJXQ?e=Gaodvs)
+
+___
+-..-. .--- .- -.- .. - --- / .-. . --.- ..- .. .-. . ... / .- / ... .- -.-. .-. .. ..-. .. -.-. . / -..-. ..-. .-.. --- .-. .--. / .. ... / .. -. -. --- -.-. . -. - / ..-. .-.. . ... ....
