@@ -67,6 +67,9 @@ To deploy this project run (In project directory)
 ## About Me
 I'm a rocket + pop culture nerd who likes computers + all things related, this is just stuff I do for my assessments, as well as a couple of things I do for fun!
 
+Contact Email:
+JFisher1@student.saintaug.nsw.edu.au
+
 
 ## Documentation
 
