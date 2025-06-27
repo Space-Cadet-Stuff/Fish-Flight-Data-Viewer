@@ -48,9 +48,9 @@ To deploy this project run (In project directory)
 
 ## Screenshots
 
-![App Screenshot](/static/images/screenshot-1)
+![App Screenshot](/static/images/screenshot-1.png)
 
-![App Screenshot](/static/images/screenshot-2)
+![App Screenshot](/static/images/screenshot-2.png)
 
 
 ## Credits
