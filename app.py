@@ -9,7 +9,7 @@ import csv
 
 
 app = Flask(__name__)
-app.secret_key = 'Youkeepusingthatword.Idonotthinkitmeanswhatyouthinkitmeans'
+app.secret_key = 'Youkeepusingthatword.Idonotthinkitmeanswhatyouthinkitmeans'# INCONCIEVABLE!!!!
 
 
 engine = create_engine('sqlite:///datalogger.db')
