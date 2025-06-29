@@ -333,10 +333,6 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-@app.route('/cause-error')
-def cause_error():
-    raise Exception("Intentional server error for testing")
-
 
 if __name__ == '__main__':
     app.run(debug=False)
