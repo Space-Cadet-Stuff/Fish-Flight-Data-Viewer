@@ -74,6 +74,7 @@
     </div>
     <script src="static/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <script type="text/javascript">
         const csvMetadata = JSON.parse('{{ csv_data | tojson | safe }}');
 
@@ -136,6 +137,17 @@
                             }
 
                             chart.update();
+                        }
+                    },
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'x'
                         }
                     }
                 },
