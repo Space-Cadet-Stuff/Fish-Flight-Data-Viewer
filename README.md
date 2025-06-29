@@ -64,17 +64,13 @@ To deploy this project run (In project directory)
  - [settings.png](https://www.flaticon.com/authors/dave-gandy)
  - [download.png](https://www.flaticon.com/authors/th-studio)
  - [delete.png](https://www.flaticon.com/authors/freepik)
- - [imagedownload.png] (https://www.flaticon.com/authors/saepul-nahwan)
 ## About Me
 I'm a rocket + pop culture nerd who likes computers + all things related, this is just stuff I do for my assessments, as well as a couple of things I do for fun!
-
-Contact Email:
-JFisher1@student.saintaug.nsw.edu.au
 
 
 ## Documentation
 
-[Documentation Link](https://1drv.ms/w/c/18b5337938ae44ef/ETsvk3iPxHhKg4QmYSDaOksBl2ZCQ6C4V1Y0qBMjHejJXQ?e=Gaodvs)
+[Documentation Link](https://1drv.ms/w/c/18b5337938ae44ef/ETsvk3iPxHhKg4QmYSDaOksBl2ZCQ6C4V1Y0qBMjHejJXQ?e=2XASt4)
 
 ___
 -..-. .--- .- -.- .. - --- / .-. . --.- ..- .. .-. . ... / .- / ... .- -.-. .-. .. ..-. .. -.-. . / -..-. ..-. .-.. --- .-. .--. / .. ... / .. -. -. --- -.-. . -. - / ..-. .-.. . ... ....
