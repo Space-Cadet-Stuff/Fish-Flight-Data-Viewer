@@ -74,13 +74,26 @@
     </div>
     <script src="static/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+    <script type="text/javascript">
+        const csvMetadata = JSON.parse('{{ csv_data | tojson | safe }}');
+
+        const chartColors = [
+            '#36a2eb', '#ff6384', '#ff9f40', '#4bc0c0',
+            '#9966ff', '#ffcd56', '#c9cbcf', '#00ff99',
+            '#ff6666', '#3399ff', '#cc99ff', '#66ffcc'
+        ];
+        let colorIndex = 0;
+
+        function getNextColor() {
+            const color = chartColors[colorIndex % chartColors.length];
+            colorIndex++;
+            return color;
+        }
+
         const ctx = document.getElementById('Graph').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'line',
-            data: {
-                datasets: []
-            },
+            data: { datasets: [] },
             options: {
                 responsive: true,
                 parsing: false,
@@ -88,6 +101,42 @@
                     title: {
                         display: true,
                         text: 'Flight Telemetry'
+                    },
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            generateLabels: function(chart) {
+                                const datasets = chart.data.datasets;
+                                return datasets.map((dataset, i) => {
+                                    const isVisible = chart.isDatasetVisible(i);
+
+                                    return {
+                                        text: dataset.label,
+                                        fillStyle: isVisible ? dataset.borderColor : 'transparent',
+                                        strokeStyle: isVisible ? dataset.borderColor : '#aaa',  // gray border when hidden
+                                        lineWidth: 2,
+                                        hidden: !isVisible,
+                                        datasetIndex: i,
+                                        pointStyle: 'circle',
+                                        borderRadius: 0,
+                                        fontColor: isVisible ? dataset.borderColor : '#aaa',
+                                        textDecoration: 'none'
+                                    };
+                                });
+                            }
+                        },
+                        onClick: function(e, legendItem, legend) {
+                            const chart = legend.chart;
+                            const index = legendItem.datasetIndex;
+
+                            if (chart.isDatasetVisible(index)) {
+                                chart.hide(index);
+                            } else {
+                                chart.show(index);
+                            }
+
+                            chart.update();
+                        }
                     }
                 },
                 scales: {
@@ -108,14 +157,13 @@
             }
         });
 
-        const loadedFiles = {}; // Cache loaded CSVs to avoid re-fetching
+        const loadedFiles = {};
 
         document.querySelectorAll('.selector').forEach(checkbox => {
             checkbox.addEventListener('change', async () => {
                 const fileId = checkbox.dataset.fileId;
 
                 if (checkbox.checked) {
-                    // Fetch + plot the CSV
                     if (!loadedFiles[fileId]) {
                         const res = await fetch(`/get_csv_data/${fileId}`);
                         const data = await res.json();
@@ -130,26 +178,33 @@
                     const keys = Object.keys(rows[0]);
                     const timeKey = keys.find(k => k.toLowerCase().includes("time")) || keys[0];
 
-                    // Add each non-time column as a dataset
+                    const fileInfo = csvMetadata.find(f => f.id == fileId);
+                    const fileLabel = fileInfo ? fileInfo.title || fileInfo.filename : `File ${fileId}`;
+
                     keys.forEach(col => {
                         if (col === timeKey) return;
                         const dataset = {
-                            label: `${col} (File ${fileId})`,
+                            label: `${col} (${fileLabel})`,
                             data: rows.map(r => ({
                                 x: parseFloat(r[timeKey]),
                                 y: parseFloat(r[col])
                             })),
+                            borderColor: getNextColor(),
+                            backgroundColor: 'transparent',
                             borderWidth: 2,
                             tension: 0.2,
                             fileId: fileId,
-                            column: col
+                            column: col,
+                            pointStyle: 'circle',
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            hidden: true
                         };
                         chart.data.datasets.push(dataset);
                     });
 
                     chart.update();
                 } else {
-                    // Remove datasets for this file
                     chart.data.datasets = chart.data.datasets.filter(ds => ds.fileId !== fileId);
                     chart.update();
                 }
