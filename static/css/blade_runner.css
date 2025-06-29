@@ -411,19 +411,21 @@ input:focus {
 
 .file-actions .button,
 .file-button {
-	margin: 0 5px;
-	padding: 8px 18px;
-	font-size: 1rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 20px;
 	background-color: #ff00ff;
 	color: #0f0f0f;
 	border: none;
 	border-radius: 5px;
-	font-family: 'Audiowide', sans-serif;
+	font-size: 1rem;
 	cursor: pointer;
-	box-shadow: 0 0 10px #ff00ff;
-	transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-	position: relative;
+	font-family: 'Audiowide', sans-serif;
+	box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+	transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 	text-align: center;
+	text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
 }
 
 .file-actions .button:hover,

@@ -45,9 +45,7 @@
                 <li>{{ file.title }} | {{ file.engine_class }} | {{ file.upload_time.strftime('%Y-%m-%d') }}
                     <div class="file-buttons">
                         <a href="{{ url_for('download_file', file_id=file.id) }}" class="file-button"><img src="{{ url_for('static', filename='images/download.png') }}" alt="download" style="height: 20px; vertical-align: middle; margin-right: 10px;">Download</a>
-                        <form action="{{ url_for('delete_file', file_id=file.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="file-button"><img src="{{ url_for('static', filename='images/delete.png') }}" alt="delete" style="height: 20px; vertical-align: middle; margin-right: 10px;">Delete</button>
-                        </form>
+                        <a href="{{ url_for('delete_file', file_id=file.id) }}" class="file-button"><img src="{{ url_for('static', filename='images/delete.png') }}" alt="delete" style="height: 20px; vertical-align: middle; margin-right: 10px;">Delete</a>
                     </div>
                 </li>
                 {% endfor %}
