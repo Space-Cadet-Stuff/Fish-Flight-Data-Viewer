@@ -64,6 +64,7 @@ To deploy this project run (In project directory)
  - [settings.png](https://www.flaticon.com/authors/dave-gandy)
  - [download.png](https://www.flaticon.com/authors/th-studio)
  - [delete.png](https://www.flaticon.com/authors/freepik)
+ - [imagedownload.png] (https://www.flaticon.com/authors/saepul-nahwan)
 ## About Me
 I'm a rocket + pop culture nerd who likes computers + all things related, this is just stuff I do for my assessments, as well as a couple of things I do for fun!
 

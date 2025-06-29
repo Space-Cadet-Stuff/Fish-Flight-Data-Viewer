@@ -61,6 +61,7 @@
                 </div>
                 <div style="flex: 2; padding: 16px;">
                     <canvas id="Graph" width="800" height="400"></canvas>
+                    <button id="downloadGraphBtn" class="button" style="margin-top: 10px; width: 80%; display: block; margin-left: auto; margin-right: auto;"><img src="{{ url_for('static', filename='images/imagedownload.png') }}" alt="Download Graph" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Download Graph Image</button>
                 </div>
             </div>
         </div>
@@ -221,6 +222,44 @@
                     chart.update();
                 }
             });
+        });
+        document.getElementById('downloadGraphBtn').addEventListener('click', () => {
+            const canvas = document.getElementById('Graph');
+
+            // Save original legend config
+            const originalGenerateLabels = chart.options.plugins.legend.labels.generateLabels;
+
+            // Temporarily override generateLabels to show only visible datasets
+            chart.options.plugins.legend.labels.generateLabels = function(chart) {
+                const datasets = chart.data.datasets;
+                return datasets
+                    .map((dataset, i) => ({ dataset, index: i }))
+                    .filter(({ index }) => chart.isDatasetVisible(index))
+                    .map(({ dataset, index }) => ({
+                        text: dataset.label,
+                        fillStyle: dataset.borderColor,
+                        strokeStyle: dataset.borderColor,
+                        lineWidth: 2,
+                        hidden: false,
+                        datasetIndex: index,
+                        pointStyle: 'circle',
+                        borderRadius: 0
+                    }));
+            };
+
+            chart.update();
+
+            // Delay slightly to ensure the chart renders the updated legend
+            setTimeout(() => {
+                const link = document.createElement('a');
+                link.download = 'flight_telemetry_graph.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                // Revert to the original generateLabels after download
+                chart.options.plugins.legend.labels.generateLabels = originalGenerateLabels;
+                chart.update();
+            }, 100); // small timeout to let the chart update before image is taken
         });
     </script>
 </body>
