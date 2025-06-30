@@ -14,15 +14,25 @@
             Fish Flight
             </a>
         </h1>
-        <div class="header-buttons">
-            <a href="{{ url_for('logout') }}" class="button"><img src="{{ url_for('static', filename='images/logout.png') }}" alt="logout" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Logout</a>
-            <a href="{{ url_for('upload') }}" class="button"><img src="{{ url_for('static', filename='images/upload.png') }}" alt="upload" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Upload Data</a>
-            <a href="{{ url_for('visualiser') }}" class="button"><img src="{{ url_for('static', filename='images/chart.png') }}" alt="visualiser" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Data Viewer</a>
-            <a href="{{ url_for('account_settings') }}" class="button"><img src="{{ url_for('static', filename='images/settings.png') }}" alt="settings" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Account Settings</a>
-            <div class="dropdown">
+        {% if session.get('user_id') %}
+            <div class="header-buttons">
+                <a href="{{ url_for('logout') }}" class="button"><img src="{{ url_for('static', filename='images/logout.png') }}" alt="logout" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Logout</a>
+                <a href="{{ url_for('upload') }}" class="button"><img src="{{ url_for('static', filename='images/upload.png') }}" alt="upload" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Upload Data</a>
+                <a href="{{ url_for('visualiser') }}" class="button"><img src="{{ url_for('static', filename='images/chart.png') }}" alt="visualiser" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Data Viewer</a>
+                <a href="{{ url_for('account_settings') }}" class="button"><img src="{{ url_for('static', filename='images/settings.png') }}" alt="settings" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Account Settings</a>
+                <div class="dropdown">
                 <a class="button" onclick="toggleThemeMenu()"><img src="{{ url_for('static', filename='images/changetheme.png') }}" alt="change theme" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Change Theme</a>
+                </div>
             </div>
-        </div>
+        {% else %}
+            <div class="header-buttons">
+                <a href="{{ url_for('login') }}" class="button"><img src="{{ url_for('static', filename='images/login.png') }}" alt="login" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Login</a>
+                <a href="{{ url_for('signup') }}" class="button"><img src="{{ url_for('static', filename='images/signup.png') }}" alt="signup" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Sign Up</a>
+                <div class="dropdown">
+                <a class="button" onclick="toggleThemeMenu()"><img src="{{ url_for('static', filename='images/changetheme.png') }}" alt="change theme" style="height: 20px; vertical-align: middle; margin-bottom: 5px; margin-right: 10px;">Change Theme</a>
+                </div>
+            </div>
+        {% endif %}
     </header>
     <main>
         <div class="content-box" style="text-align: center;">
