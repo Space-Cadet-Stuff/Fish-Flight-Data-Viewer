@@ -35,7 +35,21 @@
             </div>
             {% endif %}
             {% endwith %}
-            <h2>Welcome to Fish Flight!</h2>
+            <h2 style="text-align: center;">Welcome to Fish Flight!</h2>
+            {% if splash %}
+                <div style="text-align: center;">
+                    {% if splash_url %}
+                        <p class="splash-text" style="font-style: italic; color: #8888ff; text-align: center;">
+                            <a href="{{ splash_url }}" target="_blank" style="text-decoration: none; color: inherit;">
+                                {{ splash }}
+                            </a>
+                        </p>
+                    {% elif splash %}
+                        <p class="splash-text" style="font-style: italic; color: #ffff00; text-align: center;">{{ splash }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <br>
             <p>Fishflight is a website designed to help view and compare data from model rocket launches without having to dive through thousands of lines on a spreadsheet.</p>
             <img src="{{ url_for('static', filename='images/screenshot-1.png') }}" alt="Graph Example">
             <p>Fishflight lets users:</p>

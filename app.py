@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 import os# last time someone imported this they bricked their computer
 import csv
 import io# Used to read the CSV file content
+import random
 
 
 app = Flask(__name__)
@@ -24,8 +25,27 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/')# Define the index route
-def index():
-    return render_template('index.html')# Renders the index page
+def homepage():
+    splash = None
+    splash_url = None
+    try:
+        with open('static/other/splash.txt', 'r', encoding='utf-8') as f:
+            raw_splashes = f.read().strip().split('\n\n')
+            clean_splashes = [s.strip() for s in raw_splashes if s.strip()]
+            chosen = random.choice(clean_splashes)
+
+            if chosen.startswith("[LINK]"):
+                _, rest = chosen.split("[LINK]", 1)
+                text, url = rest.split("|", 1)
+                splash = text.strip()
+                splash_url = url.strip()
+            else:
+                splash = chosen
+    except Exception as e:
+        splash = "Error 404, Splash Message not found!"
+        splash_url = None
+
+    return render_template('index.html', splash=splash, splash_url=splash_url)# Render the index page with a random splash message
 
 @app.route('/login', methods=["GET", "POST"])# Define the login route. Also yoinked from pervious assessment
 def login():
@@ -335,4 +355,4 @@ def internal_server_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

@@ -429,3 +429,8 @@ y
 .selector {
     width: 4%;
 }
+
+.splash-text {
+  display: inline-block;
+  color: #ffffff;
+}

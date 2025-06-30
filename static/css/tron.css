@@ -36,6 +36,12 @@
     100% { background-position: 200px 0; }
 }
 
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
 body {
     font-family: 'Orbitron', sans-serif;
     background-color: #0d0d0d;
@@ -478,4 +484,11 @@ a.file-button {
     border-radius: 5px;
     color: #d0d0d0;
     text-shadow: 0 0 5px #00ffff;
+}
+
+.splash-text {
+  display: inline-block;
+  animation: pulse 3s ease-in-out infinite;
+  text-align: center;
+  transform-origin: center;
 }
