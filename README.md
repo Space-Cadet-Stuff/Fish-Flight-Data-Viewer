@@ -52,7 +52,9 @@ To deploy this project run (In project directory)
 
 ![App Screenshot](/static/images/screenshot-2.png)
 
+![App Screenshot](/static/images/screenshot-3.png)
 
+![App Screenshot](/static/images/screenshot-4.png)
 ## Credits
 
  - [login.png](https://www.flaticon.com/authors/pixel-perfect)
@@ -65,6 +67,7 @@ To deploy this project run (In project directory)
  - [download.png](https://www.flaticon.com/authors/th-studio)
  - [delete.png](https://www.flaticon.com/authors/freepik)
 ## About Me
+
 I'm a rocket + pop culture nerd who likes computers + all things related, this is just stuff I do for my assessments, as well as a couple of things I do for fun!
 
 
