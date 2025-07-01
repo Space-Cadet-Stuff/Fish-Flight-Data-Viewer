@@ -492,3 +492,8 @@ a.file-button {
   text-align: center;
   transform-origin: center;
 }
+
+input[type="checkbox"] {
+  accent-color: #00ffff;
+  cursor: pointer;
+}

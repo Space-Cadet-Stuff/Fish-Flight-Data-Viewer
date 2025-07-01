@@ -434,3 +434,8 @@ y
   display: inline-block;
   color: #ffffff;
 }
+
+input[type="checkbox"] {
+  accent-color: #ffffff;
+  cursor: pointer;
+}
